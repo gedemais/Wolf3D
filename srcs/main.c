@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/20 21:25:29 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/20 21:56:38 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,27 @@ static inline int		deal_key(int key, void *param)
 		exit(EXIT_SUCCESS);
 	else if (key == UP_KEY)
 	{
-		env->player.x += Y_DELTA * env->player.dirx;
-		env->player.y += Y_DELTA * env->player.diry;
+		env->player.x += sin(env->player.cam.angle) * Y_DELTA;
+		env->player.y += cos(env->player.cam.angle) * Y_DELTA;
 	}
 	else if (key == DOWN_KEY)
 	{
-		env->player.x -= Y_DELTA * env->player.dirx;
-		env->player.y -= Y_DELTA * env->player.diry;
+		env->player.x -= sin(env->player.cam.angle) * Y_DELTA;
+		env->player.y -= cos(env->player.cam.angle) * Y_DELTA;
 	}
 	else if (key == RIGHT_KEY)
 	{
 		env->player.cam.angle += ANGLE_DELTA;
-		env->player.dirx += env->map_wdt / ANGLE_DELTA;
-		env->player.diry += env->map_hgt / ANGLE_DELTA;
+//		env->player.dirx += env->map_wdt * ANGLE_DELTA;
+//		env->player.diry += env->map_hgt * ANGLE_DELTA;
 	}
 	else if (key == LEFT_KEY)
 	{
 		env->player.cam.angle -= ANGLE_DELTA;
-		env->player.dirx -= WDT / env->map_wdt;
-		env->player.diry -= HGT / env->map_hgt;
+//		env->player.dirx -= env->map_wdt * ANGLE_DELTA;
+//		env->player.diry -= env->map_hgt * ANGLE_DELTA;
 	}
-	printf("Player : x(%f) y(%f) angle = %f\n", env->player.x, env->player.y, env->player.cam.angle);
+	printf("Angle = %f\nx = %f\ny = %f\n", (double)env->player.cam.angle, (double)env->player.x, (double)env->player.y);
 	env->img_data = ray_casting(env);
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
 	return (0);
