@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/21 13:26:22 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/21 21:35:00 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,19 +22,31 @@
 
 # define NB_THREADS 8
 
+# define NB_SPRITES 17 
+
 # define MINIMAP_SIZE 5
 
 # define RAY_STEP 0.01f
 
 # define ANGLE_DELTA 0.05f
 
-# define Y_DELTA 0.2f
+# define Y_DELTA 0.07f
+
+# define INERTIE 0.1f
+
+# define RETICLE_SIZE 20
+
+#define BMP_HEADER_SIZE 54
 
 # define ESC_KEY 53
 # define LEFT_KEY 123
 # define RIGHT_KEY 124
 # define DOWN_KEY 125
 # define UP_KEY 126
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
 
 # include "../libft/libft.h"
 # include "mlx.h"
@@ -47,6 +59,16 @@ enum					e_bloc_type
 						BLOC_VOID,
 						BLOC_FULL,
 						BLOC_MAX
+};
+
+enum					e_weapon_type
+{
+					W_NONE,
+					W_KNIFE,
+					W_GUN,
+					W_MP40,
+					W_MINIGUN,
+					W_MAX
 };
 
 typedef struct			s_ray
@@ -84,6 +106,14 @@ typedef struct			s_player
 	t_cam				cam;
 }						t_player;
 
+typedef struct			s_weapon
+{
+	char			*loot;
+	char			*stand;
+	char			**shot;
+	char			type;
+}				t_weapon;
+
 typedef struct			s_mlx
 {
 	void				*mlx_ptr;
@@ -92,14 +122,16 @@ typedef struct			s_mlx
 	char				*img_data;
 	char				*file;
 	t_bloc				**map;
+	t_weapon			*weapons;
 	t_player			player;
 	int				mouse_x;
 	int				mouse_y;
-	unsigned int		map_hgt;
-	unsigned int		map_wdt;
-	int					bpp;
-	int					s_l;
-	int					endian;
+	unsigned int			map_hgt;
+	unsigned int			map_wdt;
+	char				weapon;
+	int				bpp;
+	int				s_l;
+	int				endian;
 }						t_mlx;
 
 /*
@@ -119,19 +151,27 @@ int						ft_exit(int status);
 */
 int					deal_key(int key, void *param);
 int					position(int x, int y, void *param);
-int	base(void *param);
+int					base(void *param);
+
+/*
+** Weapons 
+*/
+int					load_sprites(t_mlx *env);
+void					blit_weapon(t_mlx *env, char *sprite, int coords[2], int alpha);
 
 /*
 ** Parsing
 */
 int						parse_map(t_mlx *env, char *file);
 char					*read_file(int fd);
+int					load_sprites(t_mlx *env);
 
 /*
 ** Hudding
 */
 void					draw_minimap(t_mlx *env);
-void	draw_square(t_mlx *env, int x, int y, int size);
+void					draw_square(t_mlx *env, int x, int y, int size);
+void					draw_reticle(t_mlx *env);
 
 /*
 ** Utils

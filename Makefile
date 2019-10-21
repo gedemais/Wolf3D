@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/10/21 12:50:27 by demaisonc        ###   ########.fr        #
+#    Updated: 2019/10/21 18:12:26 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,8 @@ SRCS_NAME = main.c\
 			ray_casting.c\
 			deal_key.c\
 			minimap.c\
+			reticle.c\
+			load_sprites.c\
 			mlx_fts.c
 
 SRCS_PATH = srcs/
@@ -57,7 +59,7 @@ all : $(MLX_PATH) $(LIB) $(NAME) $(INC)
 
 $(NAME) : $(MLX) $(INC) $(LIB_PATH) $(SRCS)
 	@echo "Making $(RED)Wolfd3D...$(DEF)"
-	@$(CC) $(CFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) -L minilibx_macos/ minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
+	@$(CC) $(CFLAGS) $(OFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) -L minilibx_macos/ minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
 	@echo "$(GRE)Done !$(DEF)"
 
 $(LIB) :

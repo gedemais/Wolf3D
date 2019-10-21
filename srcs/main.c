@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/21 02:48:53 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/21 21:38:40 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 static inline int		ft_set_env(t_mlx *env, char *map)
 {
 	if (parse_map(env, map) != 0)
+		return (-1);
+	if (!(env->weapons = (t_weapon*)malloc(sizeof(t_weapon) * (W_MAX - 1))))
+		return (-1);
+	if (load_sprites(env) != 0)
 		return (-1);
 	if (!(env->mlx_ptr = mlx_init())
 		|| !(env->mlx_win = mlx_new_window(env->mlx_ptr, WDT, HGT, "Wolfd3D")))
@@ -28,6 +32,7 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 	env->player.dirx = 0;
 	env->player.diry = 1;
 	env->player.cam.fov = 3.141 / 3;
+	env->weapon = W_KNIFE;
 	return (0);
 }
 
@@ -43,7 +48,7 @@ static inline int		wolf_3d(char *map)
 	mlx_hook(env.mlx_win, KEY_PRESS, KEY_PRESS_MASK, deal_key, &env);
 //	mlx_hook(env.mlx_win, 4, (1L << 2), ft_press, &env);
 	mlx_hook(env.mlx_win, 6, 0, position, &env);
-	mlx_hook(env.mlx_win, 7, 0, base, &env);
+	mlx_loop_hook(env.mlx_ptr, base, &env);
 	mlx_hook(env.mlx_win, 17, (1L << 17), ft_exit, &env);
 	mlx_loop(env.mlx_ptr);
 	return (0);
