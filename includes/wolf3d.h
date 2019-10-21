@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/20 21:39:03 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/21 13:26:22 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,13 @@
 
 # define NB_THREADS 8
 
+# define MINIMAP_SIZE 5
+
 # define RAY_STEP 0.01f
 
 # define ANGLE_DELTA 0.05f
 
-# define Y_DELTA 0.1f
+# define Y_DELTA 0.2f
 
 # define ESC_KEY 53
 # define LEFT_KEY 123
@@ -91,6 +93,8 @@ typedef struct			s_mlx
 	char				*file;
 	t_bloc				**map;
 	t_player			player;
+	int				mouse_x;
+	int				mouse_y;
 	unsigned int		map_hgt;
 	unsigned int		map_wdt;
 	int					bpp;
@@ -110,12 +114,24 @@ void					ft_fill_pixel(char *img_str, int x, int y, int color);
 char					*ft_clear_image(void *param, char *img_data);
 int						ft_exit(int status);
 
+/*
+** Events
+*/
+int					deal_key(int key, void *param);
+int					position(int x, int y, void *param);
+int	base(void *param);
 
 /*
 ** Parsing
 */
 int						parse_map(t_mlx *env, char *file);
 char					*read_file(int fd);
+
+/*
+** Hudding
+*/
+void					draw_minimap(t_mlx *env);
+void	draw_square(t_mlx *env, int x, int y, int size);
 
 /*
 ** Utils

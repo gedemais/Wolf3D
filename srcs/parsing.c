@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:34 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/20 21:58:52 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/21 01:27:46 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,26 @@ int		fill_map(t_mlx *env)
 	return (0);
 }
 
+static inline void	map_bounds(t_mlx *env)
+{
+	unsigned int	i;
+
+	i = 0;
+	while (i < env->map_wdt)
+	{
+		env->map[0][i].type = 1;
+		env->map[env->map_hgt - 1][i].type = 1;
+		i++;
+	}
+	i = 0;
+	while (i < env->map_hgt)
+	{
+		env->map[i][0].type = 1;
+		env->map[i][env->map_wdt - 1].type = 1;
+		i++;
+	}
+}
+
 int		parse_map(t_mlx *env, char *file)
 {
 	unsigned int	i;
@@ -95,6 +115,7 @@ int		parse_map(t_mlx *env, char *file)
 	}
 	if (fill_map(env) != 0)
 		return (-1);
+	map_bounds(env);
 	printf("height = %d\nwidth = %d\n", env->map_hgt, env->map_wdt);
 /*	for (int i = 0; i < env->map_hgt; i++)
 	{

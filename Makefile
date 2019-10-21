@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/10/20 20:29:38 by gedemais         ###   ########.fr        #
+#    Updated: 2019/10/21 12:50:27 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,8 @@ SRCS_NAME = main.c\
 			parsing.c\
 			read_file.c\
 			ray_casting.c\
+			deal_key.c\
+			minimap.c\
 			mlx_fts.c
 
 SRCS_PATH = srcs/

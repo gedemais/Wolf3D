@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/20 20:44:22 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/21 01:46:30 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	draw_col(t_mlx *env, unsigned int x, float dcieling, float dfloor)
 	{
 	//	printf("x = %d\ny = %d\n\n", x, y);
 		if (y < dcieling)
-			ft_fill_pixel(env->img_data, x, y, 0x555555);
+			ft_fill_pixel(env->img_data, x, y, 0xaa2020);
 		else if (y >= dcieling && y < dfloor)
-			ft_fill_pixel(env->img_data, x, y, 0x00ff00);
+			ft_fill_pixel(env->img_data, x, y, 0xffffff);
 		else
 			ft_fill_pixel(env->img_data, x, y, 0x555555);
 		y++;
@@ -59,8 +59,8 @@ char	*ray_casting(t_mlx *env)
 			ray.test_x = (int)(p->x + p->eye_x * dist);
 			ray.test_y = (int)(p->y + p->eye_y * dist);
 
-			if (ray.test_x < 0 || ray.test_x > (int)env->map_wdt
-				|| ray.test_y < 0 || ray.test_y > (int)env->map_hgt)
+			if (ray.test_x < 0 || ray.test_x >= (int)env->map_wdt
+				|| ray.test_y < 0 || ray.test_y >= (int)env->map_hgt)
 			{
 				ray.hit = true;
 				dist = sqrt(ray.sq_hgt + ray.sq_wdt);

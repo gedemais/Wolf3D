@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/20 21:56:38 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/21 02:48:53 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,40 +31,6 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 	return (0);
 }
 
-static inline int		deal_key(int key, void *param)
-{
-	t_mlx	*env;
-
-	env = ((t_mlx*)param);
-	if (key == ESC_KEY)
-		exit(EXIT_SUCCESS);
-	else if (key == UP_KEY)
-	{
-		env->player.x += sin(env->player.cam.angle) * Y_DELTA;
-		env->player.y += cos(env->player.cam.angle) * Y_DELTA;
-	}
-	else if (key == DOWN_KEY)
-	{
-		env->player.x -= sin(env->player.cam.angle) * Y_DELTA;
-		env->player.y -= cos(env->player.cam.angle) * Y_DELTA;
-	}
-	else if (key == RIGHT_KEY)
-	{
-		env->player.cam.angle += ANGLE_DELTA;
-//		env->player.dirx += env->map_wdt * ANGLE_DELTA;
-//		env->player.diry += env->map_hgt * ANGLE_DELTA;
-	}
-	else if (key == LEFT_KEY)
-	{
-		env->player.cam.angle -= ANGLE_DELTA;
-//		env->player.dirx -= env->map_wdt * ANGLE_DELTA;
-//		env->player.diry -= env->map_hgt * ANGLE_DELTA;
-	}
-	printf("Angle = %f\nx = %f\ny = %f\n", (double)env->player.cam.angle, (double)env->player.x, (double)env->player.y);
-	env->img_data = ray_casting(env);
-	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
-	return (0);
-}
 
 static inline int		wolf_3d(char *map)
 {
@@ -76,7 +42,8 @@ static inline int		wolf_3d(char *map)
 	mlx_put_image_to_window(&env, env.mlx_win, env.img_ptr, 0, 0);
 	mlx_hook(env.mlx_win, KEY_PRESS, KEY_PRESS_MASK, deal_key, &env);
 //	mlx_hook(env.mlx_win, 4, (1L << 2), ft_press, &env);
-//	mlx_hook(env.mlx_win, 6, 0, ft_pos, &env);
+	mlx_hook(env.mlx_win, 6, 0, position, &env);
+	mlx_hook(env.mlx_win, 7, 0, base, &env);
 	mlx_hook(env.mlx_win, 17, (1L << 17), ft_exit, &env);
 	mlx_loop(env.mlx_ptr);
 	return (0);
