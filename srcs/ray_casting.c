@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/21 01:46:30 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/22 23:45:21 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ char	*ray_casting(t_mlx *env)
 				ray.hit = true;
 				dist = sqrt(ray.sq_hgt + ray.sq_wdt);
 			}
-			else if (env->map[ray.test_x][ray.test_y].type == 1)
+			else if (env->map[ray.test_x][ray.test_y].type > 0)
 				ray.hit = true;
 		}
 		dcieling = (float)(HGT / 2.0f) - (float)(HGT / dist);

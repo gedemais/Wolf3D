@@ -14,8 +14,10 @@ void	draw_square(t_mlx *env, int x, int y, int size)
 	int	j;
 
 	i = 0;
-	color = env->map[y / MINIMAP_SIZE][x / MINIMAP_SIZE].type == 1 ? 0xffffff : 0x888888;
-	if (*player_pos())
+	color = env->map[y / MINIMAP_SIZE][x / MINIMAP_SIZE].type == BLOC_FULL ? 0xffffff : 0x888888;
+	if (env->map[y / MINIMAP_SIZE][x / MINIMAP_SIZE].type == BLOC_SPAWN)
+		color = 0x000000;
+	else if (*player_pos())
 		color = 0xff0000;
 	while (i < size)
 	{

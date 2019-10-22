@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/22 20:22:23 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/22 23:51:50 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@
 
 # define RAY_STEP 0.01f
 
-# define ANGLE_DELTA 0.2f
-# define Y_DELTA 0.07f
+# define ANGLE_DELTA 0.05f
 # define INERTIE 0.1f
 
 # define RETICLE_SIZE 20
 
-# define NB_KEYS 256
+# define NB_KEYS 260
 
 # define ESC_KEY 53
+# define SHIFT_KEY 257
 # define LEFT_KEY 123
 # define RIGHT_KEY 124
 # define DOWN_KEY 125
@@ -61,6 +61,7 @@ enum					e_bloc_type
 {
 						BLOC_VOID,
 						BLOC_FULL,
+						BLOC_SPAWN,
 						BLOC_MAX
 };
 
@@ -101,6 +102,7 @@ typedef struct			s_cam
 typedef struct			s_player
 {
 	int				hp;
+	float				speed;
 	float				x;
 	float				y;
 	float				eye_x;
@@ -139,13 +141,13 @@ typedef struct			s_mlx
 	t_bloc				**map;
 	t_weapon			weapons[NB_WEAPONS];
 	t_player			player;
+	t_zombie			*zombie;
 	bool				keys[NB_KEYS];
-	bool				mouse;
-	int				mouse_x;
-	int				mouse_y;
 	unsigned int			map_hgt;
 	unsigned int			map_wdt;
 	char				weapon;
+	int				nb_killed;
+	bool				war;
 	int				bpp;
 	int				s_l;
 	int				endian;
@@ -170,6 +172,7 @@ int					press_key(int key, void *param);
 int					release_key(int key, void *param);
 int					position(int x, int y, void *param);
 int					base(void *param);
+void					handle_enemys(t_mlx *env);
 
 /*
 ** Weapons 

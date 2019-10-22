@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:34 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/21 01:27:46 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/22 23:40:01 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ int		fill_map(t_mlx *env)
 			{
 				if ((env->map[y][x].type = (char)ft_atoi(&env->file[i])) >= BLOC_MAX)
 					return (-1);
+				if (env->map[y][x].type == BLOC_SPAWN)
+					env->war = true;
 				x++;
 			}
 			i++;
