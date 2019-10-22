@@ -5,39 +5,17 @@ int	position(int x, int y, void *param)
 	t_mlx	*env;
 
 	env = ((t_mlx*)param);
-	env->mouse_x = x;
-	env->mouse_y = y;
+	if (env->mouse)
+	{
+		env->mouse_x = x;
+		env->mouse_y = y;
+	}
 	return (0);
 }
 
-int	base(void *param)
+void	handle_keys(t_mlx *env)
 {
-	t_mlx	*env;
-	float		rate;
-
-	env = ((t_mlx*)param);
-
-	rate = (float)((float)env->mouse_x / (float)WDT);
-	rate -= 0.5;
-	env->player.cam.angle += ANGLE_DELTA * rate;
-
-
-	env->img_data = ray_casting(env);
-
-	if (env->weapon != W_NONE)
-		draw_reticle(env);
-
-	blit_weapon(env, env->weapons[1].stand, (int[2]){200, 200}, 0x000000);
-	draw_minimap(env);
-	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
-	return (0);
-}
-
-void	handle_keys(t_mlx *env, int key)
-{
-	if (key == ESC_KEY)
-		exit(EXIT_SUCCESS);
-	else if (key == UP_KEY || key == KEY_W)
+	if (env->keys[UP_KEY] || env->keys[KEY_W])
 	{
 		env->player.x += sin(env->player.cam.angle) * Y_DELTA;
 		env->player.y += cos(env->player.cam.angle) * Y_DELTA;
@@ -47,7 +25,7 @@ void	handle_keys(t_mlx *env, int key)
 			env->player.y -= cos(env->player.cam.angle) * Y_DELTA;
 		}
 	}
-	else if (key == DOWN_KEY || key == KEY_S)
+	else if (env->keys[DOWN_KEY] || env->keys[KEY_S])
 	{
 		env->player.x -= sin(env->player.cam.angle) * Y_DELTA;
 		env->player.y -= cos(env->player.cam.angle) * Y_DELTA;
@@ -57,18 +35,78 @@ void	handle_keys(t_mlx *env, int key)
 			env->player.y += cos(env->player.cam.angle) * Y_DELTA;
 		}
 	}
-	else if (key == RIGHT_KEY || key == KEY_D)
+	else if (env->keys[KEY_D])
+	{
+		env->player.x += cos(env->player.cam.angle) * Y_DELTA;
+		env->player.y -= sin(env->player.cam.angle) * Y_DELTA;
+		if (env->map[(int)env->player.x][(int)env->player.y].type == 1)
+		{
+			env->player.x -= cos(env->player.cam.angle) * Y_DELTA;
+			env->player.y += sin(env->player.cam.angle) * Y_DELTA;
+		}
+	}
+	else if (env->keys[KEY_A])
+	{
+		env->player.x -= cos(env->player.cam.angle) * Y_DELTA;
+		env->player.y += sin(env->player.cam.angle) * Y_DELTA;
+		if (env->map[(int)env->player.x][(int)env->player.y].type == 1)
+		{
+			env->player.x += cos(env->player.cam.angle) * Y_DELTA;
+			env->player.y -= sin(env->player.cam.angle) * Y_DELTA;
+		}
+	}
+	else if (env->keys[RIGHT_KEY])
 		env->player.cam.angle += ANGLE_DELTA;
-	else if (key == LEFT_KEY || key == KEY_A)
+	else if (env->keys[LEFT_KEY])
 		env->player.cam.angle -= ANGLE_DELTA;
 }
 
-int		deal_key(int key, void *param)
+int	base(void *param)
+{
+	t_mlx	*env;
+	float		rate;
+
+	env = ((t_mlx*)param);
+
+	handle_keys(env);
+
+	if (env->mouse)
+	{
+		rate = (float)((float)env->mouse_x / (float)WDT);
+		rate -= 0.5;
+		env->player.cam.angle += ANGLE_DELTA * rate;
+	}
+
+	env->img_data = ray_casting(env);
+
+	if (env->weapon != W_NONE)
+		draw_reticle(env);
+
+	draw_minimap(env);
+	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
+	return (0);
+}
+
+int		release_key(int key, void *param)
 {
 	t_mlx	*env;
 
 	env = ((t_mlx*)param);
-	handle_keys(env, key);
+	env->keys[key] = false;
+	return (0);
+}
+
+int		press_key(int key, void *param)
+{
+	t_mlx	*env;
+
+	env = ((t_mlx*)param);
+	if (key == KEY_M)
+		env->mouse = env->mouse ? false : true;
+	else if (key == ESC_KEY)
+		exit(EXIT_SUCCESS);
+	else
+		env->keys[key] = true;
 //	printf("Angle = %f\nx = %f\ny = %f\n", (double)env->player.cam.angle, (double)env->player.x, (double)env->player.y);
 //	env->img_data = ray_casting(env);
 //	draw_minimap(env);

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/21 21:35:00 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/22 20:22:23 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,30 @@
 
 # define HGT 720
 # define WDT 1080
+
 # define KEY_PRESS 2
+# define KEY_RELEASE 3
 # define KEY_PRESS_MASK (1L<<0)
-# define ITER_BASE 30
+# define KEY_RELEASE_MASK (1L<<1)
 # define BUFF_READ 8192
 
 # define NB_THREADS 8
 
 # define NB_SPRITES 17 
+# define NB_WEAPONS 4
+# define BMP_HEADER_SIZE 54
 
 # define MINIMAP_SIZE 5
 
 # define RAY_STEP 0.01f
 
-# define ANGLE_DELTA 0.05f
-
+# define ANGLE_DELTA 0.2f
 # define Y_DELTA 0.07f
-
 # define INERTIE 0.1f
 
 # define RETICLE_SIZE 20
 
-#define BMP_HEADER_SIZE 54
+# define NB_KEYS 256
 
 # define ESC_KEY 53
 # define LEFT_KEY 123
@@ -47,6 +49,7 @@
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
+# define KEY_M 46
 
 # include "../libft/libft.h"
 # include "mlx.h"
@@ -97,14 +100,26 @@ typedef struct			s_cam
 
 typedef struct			s_player
 {
+	int				hp;
 	float				x;
 	float				y;
-	float				dirx;
-	float				diry;
 	float				eye_x;
 	float				eye_y;
 	t_cam				cam;
 }						t_player;
+
+typedef struct s_zombie	t_zombie;
+
+struct			s_zombie
+{
+	int		damages;
+	int		range;
+	int		hp;
+	int		x;
+	int		y;
+	bool		alive;
+	t_zombie	*next;
+};
 
 typedef struct			s_weapon
 {
@@ -122,8 +137,10 @@ typedef struct			s_mlx
 	char				*img_data;
 	char				*file;
 	t_bloc				**map;
-	t_weapon			*weapons;
+	t_weapon			weapons[NB_WEAPONS];
 	t_player			player;
+	bool				keys[NB_KEYS];
+	bool				mouse;
 	int				mouse_x;
 	int				mouse_y;
 	unsigned int			map_hgt;
@@ -149,7 +166,8 @@ int						ft_exit(int status);
 /*
 ** Events
 */
-int					deal_key(int key, void *param);
+int					press_key(int key, void *param);
+int					release_key(int key, void *param);
 int					position(int x, int y, void *param);
 int					base(void *param);
 

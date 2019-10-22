@@ -87,7 +87,6 @@ int	load_sprites(t_mlx *env)
 		|| !(env->weapons[0].shot[1] = read_bmp(sprite_names(3)))
 		|| !(env->weapons[0].shot[2] = read_bmp(sprite_names(4))))
 		return (-1);
-	printf("There\n");
 
 	if (!(env->weapons[1].loot = read_bmp(sprite_names(5)))
 		|| !(env->weapons[1].stand = read_bmp(sprite_names(6)))
