@@ -2,7 +2,7 @@
 
 void	handle_keys(t_mlx *env)
 {
-	env->player.speed = env->keys[SHIFT_KEY] ? 0.15 : 0.07;
+	env->player.speed = env->keys[SHIFT_KEY] ? 0.2 : 0.1;
 	if (env->keys[UP_KEY] || env->keys[KEY_W])
 	{
 		env->player.x += sin(env->player.cam.angle) * env->player.speed;
@@ -49,21 +49,27 @@ void	handle_keys(t_mlx *env)
 		env->player.cam.angle -= ANGLE_DELTA;
 }
 
-int	base(void *param)
+void	handle_weapon(t_mlx *env)
+{
+	draw_reticle(env);
+	if (env->keys[SPACE_KEY])
+		blit_sprite(env, env->sprites[(int)env->weapon + 2], (WDT / 2 - env->sprites[(int)env->weapon + 2].width / 2), HGT - env->sprites[(int)env->weapon + 2].height);
+	else
+		blit_sprite(env, env->sprites[(int)env->weapon], (WDT / 2 - env->sprites[(int)env->weapon].width / 2), HGT - env->sprites[(int)env->weapon].height);
+}
+
+int		base(void *param)
 {
 	t_mlx	*env;
 
 	env = ((t_mlx*)param);
 
 	handle_keys(env);
-
 	if (env->war)
 		handle_enemys(env);
 	env->img_data = ray_casting(env);
-
-	if (env->weapon != W_NONE)
-		draw_reticle(env);
-
+	if (env->weapon < W_MAX)
+		handle_weapon(env);
 	draw_minimap(env);
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
 	return (0);

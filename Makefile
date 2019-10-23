@@ -6,13 +6,13 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/10/23 00:05:52 by demaisonc        ###   ########.fr        #
+#    Updated: 2019/10/23 20:19:03 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra
 
 OFLAGS = -O3 -Ofast -march=native
 
@@ -61,7 +61,7 @@ all : $(MLX_PATH) $(LIB) $(NAME) $(INC)
 
 $(NAME) : $(MLX) $(INC) $(LIB_PATH) $(SRCS)
 	@echo "Making $(RED)Wolfd3D...$(DEF)"
-	@$(CC) $(CFLAGS) $(OFLAGS) -o $(NAME) -I $(INC_PATH) -L/usr/X11/lib -lx11 -I minilibx_macos/ $(SRCS) -L minilibx_macos/ minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
+	@$(CC) $(CFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) -L minilibx_macos/ minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
 	@echo "$(GRE)Done !$(DEF)"
 
 $(LIB) :

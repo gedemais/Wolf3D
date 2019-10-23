@@ -6,12 +6,12 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/22 23:51:50 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/23 21:40:22 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+#ifndef WOLF3D_H
+# define WOLF3D_H
 
 # define HGT 720
 # define WDT 1080
@@ -21,6 +21,8 @@
 # define KEY_PRESS_MASK (1L<<0)
 # define KEY_RELEASE_MASK (1L<<1)
 # define BUFF_READ 8192
+
+# define BMP_HEADER_SIZE 54
 
 # define NB_THREADS 8
 
@@ -32,14 +34,17 @@
 
 # define RAY_STEP 0.01f
 
-# define ANGLE_DELTA 0.05f
+# define ANGLE_DELTA 0.025f
 # define INERTIE 0.1f
 
 # define RETICLE_SIZE 20
 
 # define NB_KEYS 260
 
+# define PRECISION 50
+
 # define ESC_KEY 53
+# define SPACE_KEY 49
 # define SHIFT_KEY 257
 # define LEFT_KEY 123
 # define RIGHT_KEY 124
@@ -67,13 +72,21 @@ enum					e_bloc_type
 
 enum					e_weapon_type
 {
-					W_NONE,
 					W_KNIFE,
 					W_GUN,
 					W_MP40,
 					W_MINIGUN,
 					W_MAX
 };
+
+typedef struct			s_sprite
+{
+	void				*frame;
+	void				*ptr;
+	int					height;
+	int					width;
+	int					alpha;
+}						t_sprite;
 
 typedef struct			s_ray
 {
@@ -125,9 +138,9 @@ struct			s_zombie
 
 typedef struct			s_weapon
 {
-	char			*loot;
-	char			*stand;
-	char			**shot;
+	int				damages;
+	int				cadency;
+	bool			full_auto;
 	char			type;
 }				t_weapon;
 
@@ -139,9 +152,10 @@ typedef struct			s_mlx
 	char				*img_data;
 	char				*file;
 	t_bloc				**map;
+	t_sprite			*sprites;
+	t_zombie			*zombie;
 	t_weapon			weapons[NB_WEAPONS];
 	t_player			player;
-	t_zombie			*zombie;
 	bool				keys[NB_KEYS];
 	unsigned int			map_hgt;
 	unsigned int			map_wdt;
@@ -178,7 +192,7 @@ void					handle_enemys(t_mlx *env);
 ** Weapons 
 */
 int					load_sprites(t_mlx *env);
-void					blit_weapon(t_mlx *env, char *sprite, int coords[2], int alpha);
+void				blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
 
 /*
 ** Parsing

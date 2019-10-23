@@ -45,7 +45,7 @@ void	find_closest_spawn(t_mlx *env, int closest[2])
 
 void	handle_enemys(t_mlx *env)
 {
-	static int	laps = 1;;
+	static int	laps = 1;
 	int		closest[2];
 
 //	if (env->nb_killed <= z_lstlen(env->zombie) || (laps < 100 && (laps++)))

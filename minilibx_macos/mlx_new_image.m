@@ -20,8 +20,8 @@ void    *mlx_new_image(mlx_ptr_t *mlx_ptr, int width, int height)
   //    return (NULL);  // need at leat one window created to have openGL context and create texture
   if ((newimg = malloc(sizeof(*newimg))) == NULL)
     return ((void *)0);
-  newimg->next = mlx_ptr->img_list;
-  mlx_ptr->img_list = newimg;
+//  newimg->next = mlx_ptr->img_list;
+  //mlx_ptr->img_list = newimg;
   newimg->width = width;
   newimg->height = height;
   newimg->vertexes[0] = 0.0;  newimg->vertexes[1] = 0.0;
@@ -87,9 +87,7 @@ void    mlx_put_image_to_window(mlx_ptr_t *mlx_ptr, mlx_win_list_t *win_ptr, mlx
   glBindTexture(GL_TEXTURE_2D, imgctx->texture);
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, img_ptr->width, img_ptr->height, 0,
 	       GL_BGRA, GL_UNSIGNED_BYTE, img_ptr->buffer);
-
   [(id)(win_ptr->winid) mlx_gl_draw_img:img_ptr andCtx:imgctx andX:x andY:y];
-
   win_ptr->nb_flush ++;
 }
 

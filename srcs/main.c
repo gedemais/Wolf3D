@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/22 23:36:04 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/23 21:38:18 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 {
 	if (parse_map(env, map) != 0)
 		return (-1);
-//	if (load_sprites(env) != 0)
-//		return (-1);
+	if (load_sprites(env) != 0)
+		return (-1);
 	if (!(env->mlx_ptr = mlx_init())
 		|| !(env->mlx_win = mlx_new_window(env->mlx_ptr, WDT, HGT, "Wolf3D")))
 		return (-1);
@@ -44,8 +44,8 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 	ft_memset(&env->keys[0], false, sizeof(bool) * NB_KEYS);
 	place_player(env);
 	env->player.cam.fov = 3.141 / 3;
-	env->player.speed = 0.07;
-	env->weapon = W_KNIFE;
+	env->player.speed = 0.1;
+	env->weapon = W_MP40;
 	return (0);
 }
 
