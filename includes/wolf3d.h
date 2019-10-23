@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/23 21:40:22 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/23 21:47:44 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,10 @@ enum					e_bloc_type
 enum					e_weapon_type
 {
 					W_KNIFE,
-					W_GUN,
-					W_MP40,
-					W_MINIGUN,
-					W_MAX
+					W_GUN = 5,
+					W_MP40 = 9,
+					W_MINIGUN = 13,
+					W_MAX = 14
 };
 
 typedef struct			s_sprite
