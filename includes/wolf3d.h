@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 02:14:49 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/24 21:16:13 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@
 
 # define NB_THREADS 8
 
-# define NB_SPRITES 17 
+# define NB_SPRITES 22
 # define NB_WEAPONS 4
 # define BMP_HEADER_SIZE 54
 
-# define MINIMAP_SIZE 5
+# define MINIMAP_SIZE 4
 
 # define RAY_STEP 0.01f
 
@@ -41,7 +41,7 @@
 
 # define NB_KEYS 260
 
-# define PRECISION 100
+# define PRECISION 110
 
 # define ESC_KEY 53
 # define SPACE_KEY 49
@@ -55,6 +55,10 @@
 # define KEY_S 1
 # define KEY_D 2
 # define KEY_M 46
+
+# define WAVE_1 10
+# define WAVE_2 33
+# define WAVE_3 100
 
 # include "../libft/libft.h"
 # include "mlx.h"
@@ -113,7 +117,7 @@ typedef struct			s_cam
 
 typedef struct			s_player
 {
-	int				hp;
+	int					hp;
 	float				speed;
 	float				x;
 	float				y;
@@ -127,18 +131,27 @@ typedef struct s_zombie	t_zombie;
 struct			s_zombie
 {
 	int		damages;
-	int		range;
 	int		hp;
-	int		x;
-	int		y;
-	bool		alive;
+	float	x;
+	float	y;
+	float	dx;
+	float	dy;
 	t_zombie	*next;
+	t_zombie	*prev;
 };
+
+typedef struct			s_pos
+{
+	int					x;
+	int					y;
+}						t_pos;
 
 typedef struct			s_weapon
 {
 	int				damages;
 	int				cadency;
+	int				nb_frames;
+	int				speed;
 	bool			full_auto;
 	char			type;
 }				t_weapon;
@@ -153,12 +166,15 @@ typedef struct			s_mlx
 	t_bloc				**map;
 	t_sprite			*sprites;
 	t_zombie			*zombie;
-	t_weapon			weapons[NB_WEAPONS];
+	t_weapon			weapons[W_MAX];
 	t_player			player;
+	t_pos				*spawns;
 	bool				keys[NB_KEYS];
 	float				min_dist;
-	unsigned int			map_hgt;
-	unsigned int			map_wdt;
+	int					mm_size;
+	int					nb_spawns;
+	unsigned int		map_hgt;
+	unsigned int		map_wdt;
 	char				weapon;
 	int				nb_killed;
 	bool				war;
@@ -186,16 +202,13 @@ int					press_key(int key, void *param);
 int					release_key(int key, void *param);
 int					position(int x, int y, void *param);
 int					base(void *param);
-void					handle_enemys(t_mlx *env);
-
-/*
-** Optimizing
-*/
-void					find_closest_bloc(t_mlx *env, int closest[2], float *dist);
+void				handle_enemys(t_mlx *env);
+void				handle_weapon(t_mlx *env);
 
 /*
 ** Weapons 
 */
+void				init_weapons(t_mlx *env);
 int					load_sprites(t_mlx *env);
 void				blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
 
@@ -205,6 +218,16 @@ void				blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
 int						parse_map(t_mlx *env, char *file);
 char					*read_file(int fd);
 int					load_sprites(t_mlx *env);
+
+/*
+** Enemys
+*/
+int						z_lstlen(t_zombie *lst);
+void					z_free_lst(t_zombie *lst);
+void					z_snap_node(t_zombie **lst, t_zombie *node);
+int						z_pushfront(t_zombie **lst, t_zombie *new);
+t_zombie				*z_lstnew(t_mlx *env);
+void					omniscience(t_mlx *env);
 
 /*
 ** Hudding

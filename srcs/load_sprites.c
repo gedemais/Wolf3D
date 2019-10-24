@@ -45,8 +45,8 @@ char	*sp_names(int which)
 			"ressources/sprites/weapons/knife_stand.XPM",
 			"ressources/sprites/weapons/knife_floor.XPM",
 			"ressources/sprites/weapons/knife_1.XPM",
-			"ressources/sprites/weapons/knife_2.XPM",
 			"ressources/sprites/weapons/knife_3.XPM",
+			"ressources/sprites/weapons/knife_2.XPM",
 			"ressources/sprites/weapons/gun_stand.XPM",
 			"ressources/sprites/weapons/gun_floor.XPM",
 			"ressources/sprites/weapons/gun_1.XPM",
@@ -58,7 +58,12 @@ char	*sp_names(int which)
 			"ressources/sprites/weapons/minigun_stand.XPM",
 			"ressources/sprites/weapons/minigun_floor.XPM",
 			"ressources/sprites/weapons/minigun_1.XPM",
-			"ressources/sprites/weapons/minigun_2.XPM"};
+			"ressources/sprites/weapons/minigun_2.XPM",
+			"ressources/sprites/walls/wall_north.XPM",
+			"ressources/sprites/walls/wall_south.XPM",
+			"ressources/sprites/walls/wall_est.XPM",
+			"ressources/sprites/walls/wall_west.XPM",
+			"ressources/sprites/zombie.XPM"};
 	return (filenames[which]);
 }
 
@@ -72,6 +77,7 @@ int		load_sprites(t_mlx *env)
 		return (-1);
 	while (i < NB_SPRITES)
 	{
+		printf("Loading sprite %d -> %s...\n", i, sp_names(i));
 		if (!(env->sprites[i].ptr = mlx_xpm_file_to_image(env->img_ptr,
 			sp_names(i), &env->sprites[i].width, &env->sprites[i].height)))
 			return (-1);

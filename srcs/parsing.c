@@ -6,11 +6,36 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:34 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/22 23:40:01 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/24 21:28:31 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+void	get_spawns(t_mlx *env)
+{
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	k;
+
+	i = 0;
+	k = 0;
+	while (i < env->map_hgt)
+	{
+		j = 0;
+		while (j < env->map_wdt)
+		{
+			if (env->map[i][j].type == BLOC_SPAWN)
+			{
+				env->spawns[k].x = (int)j;
+				env->spawns[k].y = (int)i;
+				k++;
+			}
+			j++;
+		}
+		i++;
+	}
+}
 
 int		start_check(t_mlx *env)
 {
@@ -65,7 +90,7 @@ int		fill_map(t_mlx *env)
 			{
 				if ((env->map[y][x].type = (char)ft_atoi(&env->file[i])) >= BLOC_MAX)
 					return (-1);
-				if (env->map[y][x].type == BLOC_SPAWN)
+				if (env->map[y][x].type == BLOC_SPAWN && ++env->nb_spawns)
 					env->war = true;
 				x++;
 			}
@@ -115,16 +140,10 @@ int		parse_map(t_mlx *env, char *file)
 			return (-1);
 		i++;
 	}
-	if (fill_map(env) != 0)
+	if (fill_map(env) != 0 || !(env->spawns = (t_pos*)malloc(sizeof(t_pos) * env->nb_spawns)))
 		return (-1);
+	get_spawns(env);
 	map_bounds(env);
-	printf("height = %d\nwidth = %d\n", env->map_hgt, env->map_wdt);
-/*	for (int i = 0; i < env->map_hgt; i++)
-	{
-		for (int j = 0; j < env->map_wdt; j++)
-			printf("%d ", env->map[i][j].type);
-		printf("\n");
-	}*/
 	free(env->file);
 	return (0);
 }

@@ -44,18 +44,9 @@ void	handle_keys(t_mlx *env)
 		}
 	}
 	if (env->keys[RIGHT_KEY])
-		env->player.cam.angle += ANGLE_DELTA;
+		env->player.cam.angle += (float)ANGLE_DELTA * (float)env->player.speed * 10.0f;
 	if (env->keys[LEFT_KEY])
-		env->player.cam.angle -= ANGLE_DELTA;
-}
-
-void	handle_weapon(t_mlx *env)
-{
-	draw_reticle(env);
-	if (env->keys[SPACE_KEY])
-		blit_sprite(env, env->sprites[(int)env->weapon + 2], (WDT / 2 - env->sprites[(int)env->weapon + 2].width / 2), HGT - env->sprites[(int)env->weapon + 2].height);
-	else
-		blit_sprite(env, env->sprites[(int)env->weapon], (WDT / 2 - env->sprites[(int)env->weapon].width / 2), HGT - env->sprites[(int)env->weapon].height);
+		env->player.cam.angle -= (float)ANGLE_DELTA * (float)env->player.speed * 10.0f;
 }
 
 int		base(void *param)
@@ -98,9 +89,5 @@ int		press_key(int key, void *param)
 		exit(EXIT_SUCCESS);
 	else
 		env->keys[key] = true;
-//	printf("Angle = %f\nx = %f\ny = %f\n", (double)env->player.cam.angle, (double)env->player.x, (double)env->player.y);
-//	env->img_data = ray_casting(env);
-//	draw_minimap(env);
-//	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 02:15:08 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/24 20:39:26 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static inline void	place_player(t_mlx *env)
 {
+	env->player.hp = 100;
 	env->player.y = 0;
 	while (env->player.y < env->map_hgt)
 	{
@@ -45,7 +46,8 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 	place_player(env);
 	env->player.cam.fov = 3.141 / 2;
 	env->player.speed = 0.1;
-	env->weapon = W_MINIGUN;
+	env->nb_killed = 1;
+	init_weapons(env);
 	return (0);
 }
 
@@ -74,6 +76,7 @@ static inline int		wolf_3d(char *map)
 
 int		main(int argc, char **argv)
 {
+	srand(time(0));
 	if (argc != 2)
 	{
 		ft_putstr_fd("Usage : ./wolfd3d [map]\n", 2);

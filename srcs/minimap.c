@@ -1,33 +1,49 @@
 #include "wolf3d.h"
 
-static inline bool	*player_pos(void)
+static inline int	*color(void)
 {
-	static bool	var = false;
+	static int	var = 0;
 
 	return (&var);
 }
 
+void	get_color(char type)
+{
+	if (type == BLOC_VOID)
+		*color() = 0xaaaaaa;
+	else if (type == BLOC_FULL)
+		*color() = 0xffffff;
+	else if (type == BLOC_SPAWN)
+		*color() = 0x000000;
+}
+
 void	draw_square(t_mlx *env, int x, int y, int size)
 {
-	int	color;
 	int	i;
 	int	j;
 
 	i = 0;
-	color = env->map[y / MINIMAP_SIZE][x / MINIMAP_SIZE].type == BLOC_FULL ? 0xffffff : 0x888888;
-	if (env->map[y / MINIMAP_SIZE][x / MINIMAP_SIZE].type == BLOC_SPAWN)
-		color = 0x000000;
-	else if (*player_pos())
-		color = 0xff0000;
 	while (i < size)
 	{
 		j = 0;
 		while (j < size)
 		{
-			ft_fill_pixel(env->img_data, x + j, y + i, color);
+			ft_fill_pixel(env->img_data, x + j, y + i, *color());
 			j++;
 		}
 		i++;
+	}
+}
+
+void	point_zombies(t_mlx *env)
+{
+	t_zombie	*tmp;
+
+	tmp = env->zombie;
+	while (tmp)
+	{
+		draw_square(env, (int)tmp->x * MINIMAP_SIZE, (int)tmp->y * MINIMAP_SIZE, MINIMAP_SIZE);
+		tmp = tmp->next;
 	}
 }
 
@@ -37,17 +53,19 @@ void	draw_minimap(t_mlx *env)
 	unsigned int	j;
 
 	i = 0;
-	*player_pos() = false;
 	while (i < env->map_hgt)
 	{
 		j = 0;
 		while (j < env->map_wdt)
 		{
+			get_color(env->map[i][j].type);
 			draw_square(env, j * MINIMAP_SIZE, i * MINIMAP_SIZE, MINIMAP_SIZE);
 			j++;
 		}
 		i++;
 	}
-	*player_pos() = true;
+	*color() = 0x00ff00;
 	draw_square(env, env->player.y * MINIMAP_SIZE, env->player.x * MINIMAP_SIZE, MINIMAP_SIZE);
+	*color() = 0x0000ff;
+	point_zombies(env);
 }

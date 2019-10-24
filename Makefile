@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/10/23 20:19:03 by gedemais         ###   ########.fr        #
+#    Updated: 2019/10/24 21:06:54 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,10 @@ SRCS_NAME = main.c\
 			minimap.c\
 			reticle.c\
 			enemys.c\
+			omniscience.c\
+			math.c\
 			z_lst.c\
+			weapons.c\
 			load_sprites.c\
 			mlx_fts.c
 

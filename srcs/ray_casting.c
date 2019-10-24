@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 02:12:14 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/24 19:07:39 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,6 @@ void	draw_col(t_mlx *env, unsigned int x, float updown[2], int type)
 	}
 }
 
-float	get_min_dist(t_mlx *env)
-{
-	float		min;
-	int		closest[2];
-
-	find_closest_bloc(env, closest, &min);
-//	printf("Closest : %d %d\n", closest[0], closest[1]);
-	return (min);
-}
-
-
 char	*ray_casting(t_mlx *env)
 {
 	t_ray			ray;
@@ -62,7 +51,7 @@ char	*ray_casting(t_mlx *env)
 
 		p->eye_x = sin(ray.angle);
 		p->eye_y = cos(ray.angle);
-		ray.dist = 0.1;
+		ray.dist = 0;
 		while (!ray.hit)
 		{
 			ray.dist += RAY_STEP;
@@ -73,6 +62,7 @@ char	*ray_casting(t_mlx *env)
 		}
 		dcieling = (float)(HGT / 2.0f) - (float)(HGT / ray.dist);
 		dfloor = (float)((float)HGT - dcieling);
+		dcieling *= cosf(ft_to_radians(ray.angle));
 		draw_col(env, i, (float[2]){dcieling, dfloor}, ray.hit);
 		i++;
 	}
