@@ -6,15 +6,15 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/23 21:47:44 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/24 02:14:49 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef WOLF3D_H
 # define WOLF3D_H
 
-# define HGT 720
-# define WDT 1080
+# define HGT 600
+# define WDT 900
 
 # define KEY_PRESS 2
 # define KEY_RELEASE 3
@@ -41,7 +41,7 @@
 
 # define NB_KEYS 260
 
-# define PRECISION 50
+# define PRECISION 100
 
 # define ESC_KEY 53
 # define SPACE_KEY 49
@@ -60,6 +60,7 @@
 # include "mlx.h"
 # include <stdbool.h>
 # include <stdio.h>
+# include <limits.h>
 # include <pthread.h>
 
 enum					e_bloc_type
@@ -94,9 +95,7 @@ typedef struct			s_ray
 	float				dist;
 	int					test_x;
 	int					test_y;
-	float				sq_hgt;
-	float				sq_wdt;
-	bool				hit;
+	int				hit;
 }						t_ray;
 
 typedef struct			s_bloc
@@ -157,6 +156,7 @@ typedef struct			s_mlx
 	t_weapon			weapons[NB_WEAPONS];
 	t_player			player;
 	bool				keys[NB_KEYS];
+	float				min_dist;
 	unsigned int			map_hgt;
 	unsigned int			map_wdt;
 	char				weapon;
@@ -187,6 +187,11 @@ int					release_key(int key, void *param);
 int					position(int x, int y, void *param);
 int					base(void *param);
 void					handle_enemys(t_mlx *env);
+
+/*
+** Optimizing
+*/
+void					find_closest_bloc(t_mlx *env, int closest[2], float *dist);
 
 /*
 ** Weapons 

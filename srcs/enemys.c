@@ -14,7 +14,7 @@ float	compute_dist(t_player p, unsigned int i, unsigned int j)
 	return (sqrt(as + bs));
 }
 
-void	find_closest_spawn(t_mlx *env, int closest[2])
+void	find_closest_bloc(t_mlx *env, int closest[2], float *dist)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -22,12 +22,15 @@ void	find_closest_spawn(t_mlx *env, int closest[2])
 	float		tmp;
 
 	i = 0;
+	best = 10000000;
+	closest[0] = 0;
+	closest[1] = 0;
 	while (i < env->map_hgt)
 	{
-		j = 0;
+		j = 1;
 		while (j < env->map_wdt)
 		{
-			if (env->map[i][j].type == BLOC_SPAWN)
+			if (env->map[i][j].type != BLOC_VOID)
 			{
 				if ((tmp = compute_dist(env->player, i, j)) < best)
 				{
@@ -41,15 +44,17 @@ void	find_closest_spawn(t_mlx *env, int closest[2])
 		}
 		i++;
 	}
+	*dist = best;
 }
 
 void	handle_enemys(t_mlx *env)
 {
 	static int	laps = 1;
-	int		closest[2];
+//	int		closest[2];
 
+	(void)env;
 //	if (env->nb_killed <= z_lstlen(env->zombie) || (laps < 100 && (laps++)))
 //		return (0);
-	find_closest_spawn(env, closest);
+//	find_closest_spawn(env, closest);
 	laps = 1;
 }

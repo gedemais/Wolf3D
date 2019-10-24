@@ -6,35 +6,48 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/22 23:45:21 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/24 02:12:14 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	draw_col(t_mlx *env, unsigned int x, float dcieling, float dfloor)
+void	draw_col(t_mlx *env, unsigned int x, float updown[2], int type)
 {
 	unsigned int	y;
 
 	y = 0;
 	while (y < HGT)
 	{
-	//	printf("x = %d\ny = %d\n\n", x, y);
-		if (y < dcieling)
+		if (y < updown[0])
 			ft_fill_pixel(env->img_data, x, y, 0xaa2020);
-		else if (y >= dcieling && y < dfloor)
-			ft_fill_pixel(env->img_data, x, y, 0xffffff);
+		else if (y >= updown[0] && y < updown[1])
+		{
+			if (type == 1)
+				ft_fill_pixel(env->img_data, x, y, 0xffff00);
+			else if (type == 2)
+				ft_fill_pixel(env->img_data, x, y, 0x000000);
+		}
 		else
 			ft_fill_pixel(env->img_data, x, y, 0x555555);
 		y++;
 	}
 }
 
+float	get_min_dist(t_mlx *env)
+{
+	float		min;
+	int		closest[2];
+
+	find_closest_bloc(env, closest, &min);
+//	printf("Closest : %d %d\n", closest[0], closest[1]);
+	return (min);
+}
+
+
 char	*ray_casting(t_mlx *env)
 {
 	t_ray			ray;
-	float			ray_angle;
-	float			dist;
 	t_player		*p;
 	unsigned int	i;
 	float			dcieling;
@@ -42,35 +55,25 @@ char	*ray_casting(t_mlx *env)
 
 	i = 0;
 	p = ((t_player*)&env->player);
-	ray.sq_hgt = env->map_hgt * env->map_hgt;
-	ray.sq_wdt = env->map_wdt * env->map_wdt;
 	while (i < WDT)
 	{
-		ray_angle = (float)(p->cam.angle - p->cam.fov / 2) + (float)i / (float)WDT * p->cam.fov;
-		ray.hit = false;
+		ray.angle = (float)(p->cam.angle - p->cam.fov / 2) + (float)i / (float)WDT * p->cam.fov;
+		ray.hit = 0;
 
-		p->eye_x = sin(ray_angle);
-		p->eye_y = cos(ray_angle);
-
-		dist = 0;
+		p->eye_x = sin(ray.angle);
+		p->eye_y = cos(ray.angle);
+		ray.dist = 0.1;
 		while (!ray.hit)
 		{
-			dist += RAY_STEP;
-			ray.test_x = (int)(p->x + p->eye_x * dist);
-			ray.test_y = (int)(p->y + p->eye_y * dist);
-
-			if (ray.test_x < 0 || ray.test_x >= (int)env->map_wdt
-				|| ray.test_y < 0 || ray.test_y >= (int)env->map_hgt)
-			{
-				ray.hit = true;
-				dist = sqrt(ray.sq_hgt + ray.sq_wdt);
-			}
-			else if (env->map[ray.test_x][ray.test_y].type > 0)
-				ray.hit = true;
+			ray.dist += RAY_STEP;
+			ray.test_x = (int)(p->x + p->eye_x * ray.dist);
+			ray.test_y = (int)(p->y + p->eye_y * ray.dist);
+			if (env->map[ray.test_x][ray.test_y].type > 0)
+				ray.hit = env->map[ray.test_x][ray.test_y].type;
 		}
-		dcieling = (float)(HGT / 2.0f) - (float)(HGT / dist);
+		dcieling = (float)(HGT / 2.0f) - (float)(HGT / ray.dist);
 		dfloor = (float)((float)HGT - dcieling);
-		draw_col(env, i, dcieling, dfloor);
+		draw_col(env, i, (float[2]){dcieling, dfloor}, ray.hit);
 		i++;
 	}
 	return (env->img_data);

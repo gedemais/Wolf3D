@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/23 21:49:15 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/24 02:15:08 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 		return (-1);
 	ft_memset(&env->keys[0], false, sizeof(bool) * NB_KEYS);
 	place_player(env);
-	env->player.cam.fov = 3.141 / 3;
+	env->player.cam.fov = 3.141 / 2;
 	env->player.speed = 0.1;
-	env->weapon = W_GUN;
+	env->weapon = W_MINIGUN;
 	return (0);
 }
 

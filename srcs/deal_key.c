@@ -61,7 +61,10 @@ void	handle_weapon(t_mlx *env)
 int		base(void *param)
 {
 	t_mlx	*env;
+	clock_t	t;
+	clock_t	e;
 
+	t = clock();
 	env = ((t_mlx*)param);
 
 	handle_keys(env);
@@ -72,6 +75,8 @@ int		base(void *param)
 		handle_weapon(env);
 	draw_minimap(env);
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
+	e = clock();
+//	printf("%f\n", 1 / (float)((float)((float)e - (float)t) / 1000000));
 	return (0);
 }
 
