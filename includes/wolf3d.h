@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 21:16:13 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/28 01:39:02 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # define BUFF_READ 8192
 
 # define BMP_HEADER_SIZE 54
+
+# define MAX_PATH 256
 
 # define NB_THREADS 8
 
@@ -134,11 +136,22 @@ struct			s_zombie
 	int		hp;
 	float	x;
 	float	y;
-	float	dx;
-	float	dy;
 	t_zombie	*next;
 	t_zombie	*prev;
 };
+
+typedef struct s_as_lst	t_as_lst;
+
+struct	s_as_lst
+{
+	int		x;
+	int		y;
+	float		cost;
+	float		h;
+	t_as_lst	*next;
+	t_as_lst	*prev;
+};
+
 
 typedef struct			s_pos
 {
@@ -230,6 +243,16 @@ t_zombie				*z_lstnew(t_mlx *env);
 void					omniscience(t_mlx *env);
 
 /*
+** A*
+*/
+void					as_free_lst(t_as_lst *lst);
+void					as_snap_node(t_as_lst **lst, t_as_lst *node);
+int					as_push(t_as_lst **lst, t_as_lst *new);
+t_as_lst				*as_lstnew(float x, float y);
+t_as_lst				*as_find_node(t_as_lst *lst, t_as_lst *node);
+int					as_pop(t_as_lst **lst);
+
+/*
 ** Hudding
 */
 void					draw_minimap(t_mlx *env);
@@ -237,8 +260,14 @@ void					draw_square(t_mlx *env, int x, int y, int size);
 void					draw_reticle(t_mlx *env);
 
 /*
+** Sound
+*/
+void					weapon_sound(char type);
+
+/*
 ** Utils
 */
 double					ft_sq(double nb);
+float					compute_dist(int x, int y, int bx, int by);
 
 #endif

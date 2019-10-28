@@ -52,6 +52,7 @@ void	handle_keys(t_mlx *env)
 int		base(void *param)
 {
 	t_mlx	*env;
+//	static int	freq = 0;
 	clock_t	t;
 	clock_t	e;
 
@@ -67,7 +68,8 @@ int		base(void *param)
 	draw_minimap(env);
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
 	e = clock();
-//	printf("%f\n", 1 / (float)((float)((float)e - (float)t) / 1000000));
+//	if (freq % 60 == 0)
+//		printf("%f\n", 1 / (float)((float)((float)e - (float)t) / 1000000));
 	return (0);
 }
 

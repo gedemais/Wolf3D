@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:02 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 21:13:33 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/27 16:19:23 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,14 +59,17 @@ void	handle_enemys(t_mlx *env)
 {
 	static int	laps = 1;
 
-	(void)env;
-	if (env->nb_killed <= z_lstlen(env->zombie) || (laps < 100 && (laps++)))
+	env->weapon = manage_waves(env);
+	if (laps == 1 && z_pushfront(&env->zombie, z_lstnew(env)) != 0)
 		return ;
-	else if (z_pushfront(&env->zombie, z_lstnew(env)) != 0)
-		return ;
+//	if (env->nb_killed <= z_lstlen(env->zombie) || (laps < 100 && (laps++)))
+//		return ;
+//	else if (z_pushfront(&env->zombie, z_lstnew(env)) != 0)
+//		return ;
+//	printf("There\n");
 	omniscience(env);
 //	print_lst(env->zombie);
 //	death_priest(env);
 //	find_closest_spawn(env, closest);
-	laps = 1;
+	laps++;
 }

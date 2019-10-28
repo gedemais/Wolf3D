@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 12:44:33 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 20:23:37 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/25 11:46:22 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,22 @@
 
 void	init_weapons(t_mlx *env)
 {
-	env->weapon = W_MINIGUN;
+	env->weapon = W_MP40;
 	env->weapons[W_KNIFE].cadency = 10;
 	env->weapons[W_KNIFE].damages = 20;
 	env->weapons[W_KNIFE].full_auto = false;
 	env->weapons[W_KNIFE].speed = 2;
 	env->weapons[W_KNIFE].nb_frames = 3;
-
 	env->weapons[W_GUN].cadency = 5;
 	env->weapons[W_GUN].damages = 30;
 	env->weapons[W_GUN].full_auto = false;
 	env->weapons[W_GUN].speed = 1;
 	env->weapons[W_GUN].nb_frames = 3;
-
 	env->weapons[W_MP40].cadency = 2;
 	env->weapons[W_MP40].damages = 20;
 	env->weapons[W_MP40].full_auto = true;
 	env->weapons[W_MP40].speed = 1;
 	env->weapons[W_MP40].nb_frames = 2;
-
 	env->weapons[W_MINIGUN].cadency = 1;
 	env->weapons[W_MINIGUN].damages = 40;
 	env->weapons[W_MINIGUN].full_auto = true;
@@ -48,7 +45,7 @@ void	apply_damages(t_mlx *env)
 void	shot(t_mlx *env, bool *done)
 {
 	static int	step = 0;
-	int			speed;
+	int		speed;
 
 	speed = env->weapons[(int)env->weapon].speed;
 	if (step / speed < env->weapons[(int)env->weapon].nb_frames)

@@ -6,13 +6,13 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/10/24 21:06:54 by gedemais         ###   ########.fr        #
+#    Updated: 2019/10/28 01:47:30 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
 
 OFLAGS = -O3 -Ofast -march=native
 
@@ -27,6 +27,7 @@ SRCS_NAME = main.c\
 			omniscience.c\
 			math.c\
 			z_lst.c\
+			as_lst.c\
 			weapons.c\
 			load_sprites.c\
 			mlx_fts.c

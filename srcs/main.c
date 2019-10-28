@@ -6,15 +6,17 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 20:39:26 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/25 11:45:26 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-static inline void	place_player(t_mlx *env)
+static inline void	init_player(t_mlx *env)
 {
 	env->player.hp = 100;
+	env->player.cam.fov = 3.141 / 2;
+	env->player.speed = 0.1;
 	env->player.y = 0;
 	while (env->player.y < env->map_hgt)
 	{
@@ -31,9 +33,8 @@ static inline void	place_player(t_mlx *env)
 
 static inline int		ft_set_env(t_mlx *env, char *map)
 {
-	if (parse_map(env, map) != 0)
-		return (-1);
-	if (load_sprites(env) != 0)
+	if (parse_map(env, map) != 0
+		|| load_sprites(env) != 0)
 		return (-1);
 	if (!(env->mlx_ptr = mlx_init())
 		|| !(env->mlx_win = mlx_new_window(env->mlx_ptr, WDT, HGT, "Wolf3D")))
@@ -43,11 +44,9 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 		&env->s_l, &env->endian)))
 		return (-1);
 	ft_memset(&env->keys[0], false, sizeof(bool) * NB_KEYS);
-	place_player(env);
-	env->player.cam.fov = 3.141 / 2;
-	env->player.speed = 0.1;
-	env->nb_killed = 1;
+	init_player(env);
 	init_weapons(env);
+	env->nb_killed = 1;
 	return (0);
 }
 
