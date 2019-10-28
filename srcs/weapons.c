@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 12:44:33 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/25 11:46:22 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/28 20:54:29 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	init_weapons(t_mlx *env)
 	env->weapons[W_MINIGUN].speed = 1;
 	env->weapons[W_MINIGUN].nb_frames = 2;
 }
+
+
 /*
 void	apply_damages(t_mlx *env)
 {
@@ -69,6 +71,7 @@ void	handle_weapon(t_mlx *env)
 
 	i = 0;
 	draw_reticle(env);
+	*blit_alpha() = false;
 	if (env->keys[SPACE_KEY] && !stop)
 		shot(env, &stop);
 	else

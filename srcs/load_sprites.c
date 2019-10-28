@@ -1,5 +1,12 @@
 #include "wolf3d.h"
 
+bool	*blit_alpha(void)
+{
+	static bool		val = false;
+
+	return (&val);
+}
+
 bool	do_copy(int color, char alph[4])
 {
 	int			diff;
@@ -31,7 +38,7 @@ void	blit_sprite(t_mlx *env, t_sprite sp, int x, int y)
 		pos = (abs(y + i - 1) * WDT + x) * sizeof(int);
 		while (j < s_l)
 		{
-			if (do_copy(*(int*)&sp.frame[i * sp.width * 4 + j], alph))
+			if (*blit_alpha() || do_copy(*(int*)&sp.frame[i * sp.width * 4 + j], alph))
 				ft_memcpy(&env->img_data[pos + j], &sp.frame[i * sp.width * 4 + j], sizeof(int));
 			j += 4;
 		}
@@ -63,7 +70,8 @@ char	*sp_names(int which)
 			"ressources/sprites/walls/wall_south.XPM",
 			"ressources/sprites/walls/wall_est.XPM",
 			"ressources/sprites/walls/wall_west.XPM",
-			"ressources/sprites/zombie.XPM"};
+			"ressources/sprites/zombie.XPM",
+			"ressources/sprites/skybox.XPM"};
 	return (filenames[which]);
 }
 

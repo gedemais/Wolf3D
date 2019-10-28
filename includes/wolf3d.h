@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/28 01:39:02 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/28 20:49:22 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,13 @@
 # define WOLF3D_H
 
 # define HGT 600
-# define WDT 900
+# define WDT 800 
+
+# define WALL_NORTH 17
+# define WALL_SOUTH 18
+# define WALL_EST 19
+# define WALL_WEST 20
+
 
 # define KEY_PRESS 2
 # define KEY_RELEASE 3
@@ -28,7 +34,7 @@
 
 # define NB_THREADS 8
 
-# define NB_SPRITES 22
+# define NB_SPRITES 23
 # define NB_WEAPONS 4
 # define BMP_HEADER_SIZE 54
 
@@ -36,7 +42,7 @@
 
 # define RAY_STEP 0.01f
 
-# define ANGLE_DELTA 0.025f
+# define ANGLE_DELTA 0.033f
 # define INERTIE 0.1f
 
 # define RETICLE_SIZE 20
@@ -99,9 +105,17 @@ typedef struct			s_ray
 {
 	float				angle;
 	float				dist;
+	float				hit_x;
+	float				hit_y;
+	float				bloc_mx;
+	float				bloc_my;
+	float				bloc_angle;
+	float				sample_x;
+	float				sample_y;
+	int					sprite;
 	int					test_x;
 	int					test_y;
-	int				hit;
+	int					hit;
 }						t_ray;
 
 typedef struct			s_bloc
@@ -224,6 +238,7 @@ void				handle_weapon(t_mlx *env);
 void				init_weapons(t_mlx *env);
 int					load_sprites(t_mlx *env);
 void				blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
+bool				*blit_alpha(void);
 
 /*
 ** Parsing

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:06:27 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/28 02:22:44 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/28 21:03:45 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,8 +167,10 @@ void		omniscience(t_mlx *env)
 	tmp = env->zombie;
 	while (tmp)
 	{
-		printf("Zombie %d:\n", z);
-		apply_a_star(env, tmp);
+//		apply_a_star(env, tmp);
+		if (tmp->x > -1 && tmp->x < env->map_wdt && tmp->y > 0 && tmp->y < env->map_hgt)
+		{
+		}
 		tmp = tmp->next;
 		z++;
 	}

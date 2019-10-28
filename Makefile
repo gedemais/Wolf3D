@@ -6,13 +6,13 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/10/28 01:47:30 by demaisonc        ###   ########.fr        #
+#    Updated: 2019/10/28 17:00:15 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra -g3 -fsanitize=address
+CFLAGS = -Wall -Werror -Wextra #-g3 -fsanitize=address
 
 OFLAGS = -O3 -Ofast -march=native
 

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:02 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/27 16:19:23 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/28 21:00:10 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 int		manage_waves(t_mlx *env)
 {
-	if (env->nb_killed < WAVE_1)
+/*	if (env->nb_killed < WAVE_1)
 		return (W_KNIFE);
 	else if (env->nb_killed < WAVE_2)
 		return (W_GUN);
 	else if (env->nb_killed < WAVE_3)
 		return (W_MP40);
-	else
-		return (W_MINIGUN);
+	else*/
+	(void)env;
+		return (W_MP40);
 }
 
 void	print_lst(t_zombie *lst)
@@ -55,6 +56,19 @@ void	death_priest(t_mlx *env)
 	}
 }
 
+void	render_zombies(t_mlx *env)
+{
+	t_zombie	*tmp;
+
+	tmp = env->zombie;
+	*blit_alpha() = false;
+	while (tmp)
+	{
+//		blit_sprite(env, env->sprites[21], WDT / 2, HGT / 2);
+		tmp = tmp->next;
+	}
+}
+
 void	handle_enemys(t_mlx *env)
 {
 	static int	laps = 1;
@@ -68,8 +82,7 @@ void	handle_enemys(t_mlx *env)
 //		return ;
 //	printf("There\n");
 	omniscience(env);
+	render_zombies(env);
 //	print_lst(env->zombie);
-//	death_priest(env);
-//	find_closest_spawn(env, closest);
 	laps++;
 }
