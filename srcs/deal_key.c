@@ -43,10 +43,10 @@ void	handle_keys(t_mlx *env)
 			env->player.y -= sin(env->player.cam.angle) * env->player.speed;
 		}
 	}
-	if (env->keys[RIGHT_KEY])
+/*	if (env->keys[RIGHT_KEY])
 		env->player.cam.angle += (float)ANGLE_DELTA * (float)env->player.speed * 10.0f;
 	if (env->keys[LEFT_KEY])
-		env->player.cam.angle -= (float)ANGLE_DELTA * (float)env->player.speed * 10.0f;
+		env->player.cam.angle -= (float)ANGLE_DELTA * (float)env->player.speed * 10.0f;*/
 }
 
 int		base(void *param)
@@ -66,11 +66,53 @@ int		base(void *param)
 	if (env->weapon < W_MAX)
 		handle_weapon(env);
 	draw_minimap(env);
+//	blit_sprite(env, env->sprites[NB_SPRITES - 3], 0, 0);
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
 	e = clock();
 	if (freq % 60 == 0)
 		printf("%f\n", 1 / (float)((float)((float)e - (float)t) / 1000000));
 	freq++;
+	return (0);
+}
+
+int		pos(int x, int y, void *param)
+{
+	t_mlx	*env;
+
+	env = ((t_mlx*)param);
+	x = 100 - x;
+	(void)y;
+
+	replace_pointer(100, 100);
+	x -= 100;
+	if (x >= -2 && x <= 2)
+		return (0);
+	printf("%d\n", x);
+	env->player.cam.angle -= (float)((float)x / 500.0f);
+	return (0);
+}
+
+int		release(int button, int x, int y, void *param)
+{
+	t_mlx	*env;
+
+	(void)x;
+	(void)y;
+	env = ((t_mlx*)param);
+	if (button == 1)
+		env->keys[SPACE_KEY] = false;
+	return (0);
+}
+
+int		press(int button, int x, int y, void *param)
+{
+	t_mlx	*env;
+
+	(void)x;
+	(void)y;
+	env = ((t_mlx*)param);
+	if (button == 1)
+		env->keys[SPACE_KEY] = true;
 	return (0);
 }
 
@@ -90,19 +132,9 @@ int		press_key(int key, void *param)
 	env = ((t_mlx*)param);
 	if (key == ESC_KEY)
 		exit(EXIT_SUCCESS);
+	else if (key == KEY_N)
+		env->night = env->night ? false : true;
 	else
 		env->keys[key] = true;
 	return (0);
 }
-/*
-void	ft_fill_pixel(char *img_data, int x, int y, int color)
-{
-	char	argb[4];
-	int		pos;
-
-	if (x y < 0 || x y > hors de l'image)
-		return ;
-	ft_memcpy(color, &color);
-	pos = (abs(y - 1) * WDT + x) * sizeof(int);
-	ft_memcpy(&img_data[pos], &argb, sizeof(int));
-}*/

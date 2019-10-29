@@ -71,6 +71,7 @@ char	*sp_names(int which)
 			"ressources/sprites/walls/wall_est.XPM",
 			"ressources/sprites/walls/wall_west.XPM",
 			"ressources/sprites/zombie.XPM",
+			"ressources/sprites/maboye.XPM",
 			"ressources/sprites/skybox.XPM"};
 	return (filenames[which]);
 }

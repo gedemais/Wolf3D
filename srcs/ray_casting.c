@@ -6,11 +6,23 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/28 21:47:42 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/29 19:23:17 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+void	ft_fill_texture(char *img_str, int x, int y, int color)
+{
+	int		pos;
+
+	if (x >= WDT || x < 0 || y >= HGT || y < 0)
+		return ;
+	pos = (abs(y - 1) * WDT + x) * sizeof(int);
+	img_str[pos + 2] = color >> 16 & 255;
+	img_str[pos + 1] = color >> 8 & 255;
+	img_str[pos] = color & 255;
+}
 
 void	draw_col(t_mlx *env, unsigned int x, float updown[2], t_ray *ray)
 {
@@ -24,7 +36,10 @@ void	draw_col(t_mlx *env, unsigned int x, float updown[2], t_ray *ray)
 		{
 			ray->sample_y = ((float)y - updown[0]) / (updown[1] - updown[0]);
 			pos = (abs((int)(ray->sample_y * 288) - 1) * 288 + (int)(ray->sample_x * 288)) * sizeof(int);
-			ft_fill_pixel(env->img_data, x, y, *(int*)&env->sprites[ray->sprite].frame[pos]);
+			if (env->night)
+				ft_fill_pixel(env->img_data, x, y, *(int*)&env->sprites[ray->sprite].frame[pos]);
+			else
+				ft_fill_texture(env->img_data, x, y, *(int*)&env->sprites[ray->sprite].frame[pos]);
 		}
 		y++;
 	}
@@ -59,6 +74,7 @@ char	*ray_casting(t_mlx *env)
 	unsigned int	i;
 	float			dcieling;
 	float			dfloor;
+	float			rectify;
 
 	i = 0;
 	p = ((t_player*)&env->player);
@@ -88,28 +104,30 @@ char	*ray_casting(t_mlx *env)
 
 				ray.bloc_angle = atan2f((ray.hit_y - ray.bloc_my), (ray.hit_x - ray.bloc_mx));
 
-						if (ray.bloc_angle >= -3.14159f * 0.25f && ray.bloc_angle < 3.14159f * 0.25f)
-						{
-							ray.sprite = WALL_NORTH;
-							ray.sample_x = ray.hit_y - (float)ray.test_y;
-						}
-						else if (ray.bloc_angle >= 3.14159f * 0.25f && ray.bloc_angle < 3.14159f * 0.75f)
-						{
-							ray.sprite = WALL_SOUTH;
-							ray.sample_x = ray.hit_x - (float)ray.test_x;
-						}
-						else if (ray.bloc_angle < -3.14159f * 0.25f && ray.bloc_angle >= -3.14159f * 0.75f)
-						{
-							ray.sprite = WALL_EST;
-							ray.sample_x = ray.hit_x - (float)ray.test_x;
-						}
-						else if (ray.bloc_angle >= 3.14159f * 0.75f || ray.bloc_angle < -3.14159f * 0.75f)
-						{
-							ray.sprite = WALL_WEST;
-							ray.sample_x = ray.hit_y - (float)ray.test_y;
-						}
+				if (ray.bloc_angle >= -3.14159f * 0.25f && ray.bloc_angle < 3.14159f * 0.25f)
+				{
+					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_NORTH;
+					ray.sample_x = ray.hit_y - (float)ray.test_y;
+				}
+				else if (ray.bloc_angle >= 3.14159f * 0.25f && ray.bloc_angle < 3.14159f * 0.75f)
+				{
+					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_SOUTH;
+					ray.sample_x = ray.hit_x - (float)ray.test_x;
+				}
+				else if (ray.bloc_angle < -3.14159f * 0.25f && ray.bloc_angle >= -3.14159f * 0.75f)
+				{
+					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_EST;
+					ray.sample_x = ray.hit_x - (float)ray.test_x;
+				}
+				else if (ray.bloc_angle >= 3.14159f * 0.75f || ray.bloc_angle < -3.14159f * 0.75f)
+				{
+					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_WEST;
+					ray.sample_x = ray.hit_y - (float)ray.test_y;
+				}
 			}
 		}
+		rectify = ((float)i * p->cam.fov / (float)WDT) - p->cam.fov / 2.0f;
+//		ray.dist *= cosf(rectify) + 0.1;
 		dcieling = (float)(HGT / 2.0f) - (float)(HGT / ray.dist);
 		dfloor = (float)((float)HGT - dcieling);
 		draw_col(env, i, (float[2]){dcieling, dfloor}, &ray);

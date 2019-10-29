@@ -6,22 +6,22 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:26 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/26 16:02:27 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/10/29 17:53:53 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-float	compute_dist(int x, int y, int bx, int by)
+float	compute_dist(int ax, int ay, int bx, int by)
 {
-	int	a;
-	int	as;
-	int	b;
-	int	bs;
+	int		a;
+	float	as;
+	int		b;
+	float	bs;
 
-	a = bx - x;
+	a = abs(bx - ax);
+	b = abs(by - ay);
 	as = a * a;
-	b = by - y;
 	bs = b * b;
-	return (sqrt(as + bs));
+	return (sqrtf(as + bs));
 }

@@ -93,7 +93,6 @@ void mlx_loop(mlx_ptr_t *mlx_ptr)
 {
   CFRunLoopObserverRef observer;
   CFRunLoopObserverContext ocontext = {.version = 0, .info = mlx_ptr, .retain = NULL, .release = NULL, .copyDescription = NULL};
-
   mlx_ptr->main_loop_active = 1;
 
   observer = CFRunLoopObserverCreate(NULL, kCFRunLoopBeforeTimers, true, 0, do_loop_flush, &ocontext);

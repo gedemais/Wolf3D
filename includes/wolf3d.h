@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/28 20:49:22 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/29 23:02:22 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define WALL_SOUTH 18
 # define WALL_EST 19
 # define WALL_WEST 20
+# define MABOYE 22
 
 
 # define KEY_PRESS 2
@@ -34,7 +35,7 @@
 
 # define NB_THREADS 8
 
-# define NB_SPRITES 23
+# define NB_SPRITES 24
 # define NB_WEAPONS 4
 # define BMP_HEADER_SIZE 54
 
@@ -63,6 +64,7 @@
 # define KEY_S 1
 # define KEY_D 2
 # define KEY_M 46
+# define KEY_N 45
 
 # define WAVE_1 10
 # define WAVE_2 33
@@ -71,6 +73,7 @@
 # include "../libft/libft.h"
 # include "mlx.h"
 # include <stdbool.h>
+# include <assert.h>
 # include <stdio.h>
 # include <limits.h>
 # include <pthread.h>
@@ -154,18 +157,23 @@ struct			s_zombie
 	t_zombie	*prev;
 };
 
-typedef struct s_as_lst	t_as_lst;
+typedef struct s_node	t_node;
 
-struct	s_as_lst
+struct s_node
 {
+	float	cost;
+	float	h;
+	float	gdist;
+	float	ldist;
+	int		neighbours[4];
 	int		x;
 	int		y;
-	float		cost;
-	float		h;
-	t_as_lst	*next;
-	t_as_lst	*prev;
+	int		parent;
+	int		index;
+	bool	visited;
+	bool	full;
+	t_node	*next;
 };
-
 
 typedef struct			s_pos
 {
@@ -197,6 +205,7 @@ typedef struct			s_mlx
 	t_player			player;
 	t_pos				*spawns;
 	bool				keys[NB_KEYS];
+	bool				night;
 	float				min_dist;
 	int					mm_size;
 	int					nb_spawns;
@@ -227,10 +236,14 @@ int						ft_exit(int status);
 */
 int					press_key(int key, void *param);
 int					release_key(int key, void *param);
+int					pos(int x, int y, void *param);
+int					release(int button, int x, int y, void *param);
+int					press(int button, int x, int y, void *param);
 int					position(int x, int y, void *param);
 int					base(void *param);
 void				handle_enemys(t_mlx *env);
 void				handle_weapon(t_mlx *env);
+void				replace_pointer(int x, int y);
 
 /*
 ** Weapons 
@@ -245,7 +258,7 @@ bool				*blit_alpha(void);
 */
 int						parse_map(t_mlx *env, char *file);
 char					*read_file(int fd);
-int					load_sprites(t_mlx *env);
+int						load_sprites(t_mlx *env);
 
 /*
 ** Enemys
@@ -260,12 +273,13 @@ void					omniscience(t_mlx *env);
 /*
 ** A*
 */
-void					as_free_lst(t_as_lst *lst);
-void					as_snap_node(t_as_lst **lst, t_as_lst *node);
-int					as_push(t_as_lst **lst, t_as_lst *new);
-t_as_lst				*as_lstnew(float x, float y);
-t_as_lst				*as_find_node(t_as_lst *lst, t_as_lst *node);
-int					as_pop(t_as_lst **lst);
+int						a_star(t_mlx *env, t_node *grid, t_zombie *z, float dir[2]);
+float					compute_dist(int ax, int ay, int bx, int by);
+
+t_node					*node_new(t_node *src);
+int						node_pushback(t_node **lst, t_node *node);
+void					node_pop(t_node *lst);
+int						node_len(t_node *lst);
 
 /*
 ** Hudding
@@ -283,6 +297,5 @@ void					weapon_sound(char type);
 ** Utils
 */
 double					ft_sq(double nb);
-float					compute_dist(int x, int y, int bx, int by);
 
 #endif

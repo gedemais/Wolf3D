@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:02 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/28 21:00:10 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/29 17:59:46 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		manage_waves(t_mlx *env)
 		return (W_MP40);
 	else*/
 	(void)env;
-		return (W_MP40);
+		return (W_MINIGUN);
 }
 
 void	print_lst(t_zombie *lst)
@@ -83,6 +83,5 @@ void	handle_enemys(t_mlx *env)
 //	printf("There\n");
 	omniscience(env);
 	render_zombies(env);
-//	print_lst(env->zombie);
 	laps++;
 }
