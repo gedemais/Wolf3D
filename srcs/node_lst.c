@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 17:25:47 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/29 18:22:48 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/30 21:35:44 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,21 @@ int		node_len(t_node *lst)
 	return (ret);
 }
 
-void	node_pop(t_node *lst)
+void	node_pop(t_node **lst)
 {
 	t_node	*tmp;
 
-	if (!lst || !lst->next)
+	if (!(*lst))
 		return ;
-	tmp = lst->next;
-	free(lst);
-	lst = tmp;
+	if (!(*lst)->next)
+	{
+		free(*lst);
+		*lst = NULL;
+		return ;
+	}
+	tmp = (*lst)->next;
+	free(*lst);
+	(*lst) = tmp;
 }
 
 int		node_pushback(t_node **lst, t_node *node)
@@ -46,9 +52,10 @@ int		node_pushback(t_node **lst, t_node *node)
 	if (!(*lst))
 	{
 		*lst = node;
-		node->next = NULL;
+		(*lst)->next = NULL;
+		return (0);
 	}
-	while (tmp->next)
+	while (tmp && tmp->next)
 		tmp = tmp->next;
 	tmp->next = node;
 	node->next = NULL;
@@ -61,6 +68,8 @@ t_node	*node_new(t_node *src)
 
 	if (!(new = (t_node*)malloc(sizeof(t_node))))
 		return (NULL);
-	ft_memcpy(&new, src, sizeof(t_node));
+	ft_memcpy(new, src, sizeof(t_node));
+//	for (int i = 0; i < 4 ; i++)
+//		printf("neighbour %d : %d\n", i, src->neighbours[i]);
 	return (new);
 }

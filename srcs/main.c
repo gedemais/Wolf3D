@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/29 23:02:43 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/30 13:59:05 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,6 @@ static inline void	set_hooks(t_mlx *env)
 {
 	mlx_hook(env->mlx_win, KEY_PRESS, KEY_PRESS_MASK, press_key, env);
 	mlx_hook(env->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, release_key, env);
-	mlx_hook(env->mlx_win, 4, (1L << 2), press, env);
-	mlx_hook(env->mlx_win, 4, (1L << 3), release, env);
-	mlx_hook(env->mlx_win, 6, 0, pos, env);
 	mlx_loop_hook(env->mlx_ptr, base, env);
 	mlx_hook(env->mlx_win, 17, (1L << 17), ft_exit, env);
 }

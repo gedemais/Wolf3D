@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/29 19:23:17 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/30 20:03:18 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ char	*ray_casting(t_mlx *env)
 			}
 		}
 		rectify = ((float)i * p->cam.fov / (float)WDT) - p->cam.fov / 2.0f;
-//		ray.dist *= cosf(rectify) + 0.1;
+		ray.dist *= cosf(rectify) + 0.25;
 		dcieling = (float)(HGT / 2.0f) - (float)(HGT / ray.dist);
 		dfloor = (float)((float)HGT - dcieling);
 		draw_col(env, i, (float[2]){dcieling, dfloor}, &ray);

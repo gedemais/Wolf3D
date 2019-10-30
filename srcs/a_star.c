@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:29:09 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/29 20:07:06 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/30 21:15:59 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	sort_lst(t_node **lst)
 	tmp = *lst;
 	while (i < len && tmp->next)
 	{
-		if (tmp->gdist > tmp->next->gdist)
+		if (tmp->ggoal > tmp->next->ggoal)
 		{
 			swap = *tmp;
 			*tmp = *(tmp->next);
@@ -37,55 +37,65 @@ void	sort_lst(t_node **lst)
 	}
 }
 
-void	set_current(t_mlx *env, t_zombie *z, t_node *c)
+int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[2])
 {
-	c->x = z->x;
-	c->y = z->y;
-	c->ldist = 0.0f;
-	c->gdist = compute_dist(c->x, c->y, (int)env->player.y, (int)env->player.x);
-}
-
-int		a_star(t_mlx *env, t_node *grid, t_zombie *z, float dir[2])
-{
-	t_node	*opened;
-	t_node	current;
-//	float	goal;
+	t_node	*current;
+	t_node	*set;
+	t_node	*n;
+	float	low_goal;
 	int		i;
+	(void)env;
+	(void)nodes;
 
-	opened = NULL;
-	(void)dir;
-	(void)grid;
-	i = 0;
-	set_current(env, z, &current);
-	if (node_pushback(&opened, node_new(&current)) != 0)
+	set = NULL;
+	current = s_e[0];
+	if (node_pushback(&set, node_new(current)) != 0)
 		return (-1);
-	while (opened)
+
+	dir[0] = 0;
+	dir[1] = 0;
+
+	while (set)
 	{
-		sort_lst(&opened);
+		sort_lst(&set);
 
-		while (opened && opened->visited)
-			node_pop(opened);
+		while (set && set->visited)
+			node_pop(&set);
 
-		if (!opened)
+		if (!set)
+			break;
+
+		current = set;
+		current->visited = true;
+
+		if (current->x == (int)env->player.x && current->y == (int)env->player.y)
 			break ;
 
-		current = *opened;
-		opened->visited = true;
-
-/*		while (i < 4)
+		i = 0;
+		while (i < 4)
 		{
-			if (!grid[current.neighbours[i]].visited && !grid[current.neighbours[i]].full)
-				node_pushback(&opened, node_new(&grid[current.neighbours[i]]));
-			goal = current.ldist + compute_dist(current->x, current->y, grid[current->neighbours[i]].x, grid[current->neighbours[i]].y);
-			if (goal < grid[current.neighbours[i]].ldist)
+			if (current->neighbours[i])
 			{
-				grid[current.neighbours[i]].parent = current->index;
-				grid[current.neighbours[i]].ldist = goal;
-	//			grid[current.neighbours[i]].gdist = goal + compute_dist();
+				n = ((t_node*)current->neighbours[i]);
+
+				printf("There1 %d\n", set->index);
+				if (!n->visited && !n->full)
+					node_pushback(&set, node_new(n));
+				printf("There2\n");
+
+				low_goal = current->lgoal + compute_dist(current->x, current->y, n->x, n->y);
+				if (low_goal < n->lgoal)
+				{
+					n->parent = current;
+					n->lgoal = low_goal;
+					n->ggoal = n->lgoal + compute_dist(current->x, current->y, n->x, n->y);
+				}
 			}
 			i++;
-		}*/
+		}
 	}
+//	printf("start : %d %d\nend : %d %d\n------------\n", s_e[0]->x, s_e[0]->y, s_e[1]->x, s_e[1]->y);
 
+//	reconstruct_path(end);
 	return (0);
 }

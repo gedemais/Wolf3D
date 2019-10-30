@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/29 23:02:22 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/30 18:57:22 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,17 +161,15 @@ typedef struct s_node	t_node;
 
 struct s_node
 {
-	float	cost;
-	float	h;
-	float	gdist;
-	float	ldist;
-	int		neighbours[4];
+	float	ggoal;
+	float	lgoal;
 	int		x;
 	int		y;
-	int		parent;
+	t_node	*neighbours[4];
+	t_node	*parent;
 	int		index;
-	bool	visited;
 	bool	full;
+	bool	visited;
 	t_node	*next;
 };
 
@@ -204,6 +202,8 @@ typedef struct			s_mlx
 	t_weapon			weapons[W_MAX];
 	t_player			player;
 	t_pos				*spawns;
+	t_node				*start;
+	t_node				*end;
 	bool				keys[NB_KEYS];
 	bool				night;
 	float				min_dist;
@@ -273,12 +273,12 @@ void					omniscience(t_mlx *env);
 /*
 ** A*
 */
-int						a_star(t_mlx *env, t_node *grid, t_zombie *z, float dir[2]);
+int						a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[2]);
 float					compute_dist(int ax, int ay, int bx, int by);
 
 t_node					*node_new(t_node *src);
 int						node_pushback(t_node **lst, t_node *node);
-void					node_pop(t_node *lst);
+void					node_pop(t_node **lst);
 int						node_len(t_node *lst);
 
 /*
