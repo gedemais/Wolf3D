@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/30 18:57:22 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/10/31 00:55:42 by demaisonc        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -288,6 +288,7 @@ void					draw_minimap(t_mlx *env);
 void					draw_square(t_mlx *env, int x, int y, int size);
 void					draw_reticle(t_mlx *env);
 
+void					barre_de_vie(t_mlx *env, int padx, int pady);
 /*
 ** Sound
 */

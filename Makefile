@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/10/30 21:09:45 by gedemais         ###   ########.fr        #
+#    Updated: 2019/10/31 00:49:23 by demaisonc        ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ SRCS_NAME = main.c\
 			enemys.c\
 			omniscience.c\
 			math.c\
+			barre.c\
 			z_lst.c\
 			node_lst.c\
 			weapons.c\

@@ -61,11 +61,12 @@ int		base(void *param)
 
 	handle_keys(env);
 	env->img_data = ray_casting(env);
-	if (env->war)
-		handle_enemys(env);
+//	if (env->war)
+//		handle_enemys(env);
 	if (env->weapon < W_MAX)
 		handle_weapon(env);
 	draw_minimap(env);
+	barre_de_vie(env, WDT / 1.5, HGT - HGT / 8);
 //	blit_sprite(env, env->sprites[NB_SPRITES - 3], 0, 0);
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
 	e = clock();
