@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:02 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/30 14:08:44 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:02:24 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int		manage_waves(t_mlx *env)
 	(void)env;
 		return (W_MP40);
 }
-
+/*
 void	print_lst(t_zombie *lst)
 {
 	t_zombie	*tmp;
@@ -37,7 +37,7 @@ void	print_lst(t_zombie *lst)
 	}
 	printf("\n\n\n");
 }
-
+*/
 void	death_priest(t_mlx *env)
 {
 	t_zombie	*tmp;
@@ -71,17 +71,13 @@ void	render_zombies(t_mlx *env)
 
 void	handle_enemys(t_mlx *env)
 {
-	static int	laps = 1;
+	static int	laps = 0;
 
 	env->weapon = manage_waves(env);
-	if (laps == 1 && z_pushfront(&env->zombie, z_lstnew(env)) != 0)
-		return ;
-//	if (env->nb_killed <= z_lstlen(env->zombie) || (laps < 100 && (laps++)))
-//		return ;
-//	else if (z_pushfront(&env->zombie, z_lstnew(env)) != 0)
-//		return ;
-//	printf("There\n");
 	omniscience(env);
-	render_zombies(env);
+	if (env->nb_killed <= z_lstlen(env->zombie))
+		return ;
+	else if (laps > 100 && !(laps = 0) && z_pushfront(&env->zombie, z_lstnew(env)) != 0)
+		return ;
 	laps++;
 }

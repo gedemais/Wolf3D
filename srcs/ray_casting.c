@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/31 01:12:04 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/11/01 19:52:04 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ char	*ray_casting(t_mlx *env)
 
 	i = 0;
 	p = ((t_player*)&env->player);
-	set_background(env);
 	while (i < WDT)
 	{
 		ray.angle = (float)(p->cam.angle - p->cam.fov / 2) + (float)i / (float)WDT * p->cam.fov;

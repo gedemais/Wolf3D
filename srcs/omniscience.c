@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:06:27 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/30 21:15:09 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/01 19:02:42 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,23 @@
 
 void		apply_a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], t_zombie *z)
 {
-	float	tmp[2];
+	float	tmp[4];
 	float		speed;
 
-	speed = 0.1;
-	if (a_star(env, nodes, s_e, tmp) != 0)
-		return ;
+	speed = 0.25;
+	tmp[0] = 0.0f;
+	tmp[1] = 0.0f;
+	tmp[2] = z->x;
+	tmp[3] = z->y;
+	//printf("Player : %f %f\n", env->player.x, env->player.y);
+	if (z->refresh == 0)
+	{
+		a_star(env, nodes, s_e, tmp);
+		z->refresh = 3;
+	}
+	else
+		z->refresh--;
+//	printf("Direction = %f %f\n", tmp[0], tmp[1]);
 	z->x += tmp[0] * speed;
 	z->y += tmp[1] * speed;
 }
@@ -41,6 +52,7 @@ void		fill_neighbours(t_mlx *env, t_node *nodes)
 			nodes[pos].neighbours[1] = (y < env->map_hgt - 1) ? &nodes[(y + 1) * env->map_wdt + x] : NULL;
 			nodes[pos].neighbours[2] = (x > 0) ? &nodes[y * env->map_wdt + (x - 1)] : NULL;
 			nodes[pos].neighbours[3] = (x < env->map_wdt - 1) ? &nodes[y * env->map_wdt + (x + 1)] : NULL;
+
 /*			printf("node %d :\nx = %d | y = %d\nvisited = %d\nfull = %d\n", nodes[pos].index, nodes[pos].x, nodes[pos].y, nodes[pos].visited, nodes[pos].full);
 			for (int i = 0; i < 4; i++)
 			{
@@ -86,6 +98,29 @@ t_node		*init_nodes(t_mlx *env)
 	return (dest);
 }
 
+void	reset_values(t_mlx *env, t_node *nodes)
+{
+	int				pos;
+	unsigned int	x;
+	unsigned int	y;
+	
+	y = 0;
+	while (y < env->map_hgt)
+	{
+		x = 0;
+		while (x < env->map_wdt)
+		{
+			pos = y * env->map_wdt + x;
+			nodes[pos].visited = false;
+			nodes[pos].ggoal = 10000000;
+			nodes[pos].lgoal = 10000000;
+			nodes[pos].parent = NULL;
+			x++;
+		}
+		y++;
+	}
+}
+
 void		omniscience(t_mlx *env)
 {
 	t_zombie		*tmp;
@@ -99,6 +134,7 @@ void		omniscience(t_mlx *env)
 	env->end->y = (int)env->player.y;
 	while (tmp)
 	{
+		reset_values(env, nodes);
 		env->start = &nodes[(int)tmp->y * env->map_wdt + (int)tmp->x];
 		env->start->lgoal = 0.0f;
 		env->start->ggoal = compute_dist(env->start->x, env->start->y, env->end->x, env->end->y);
@@ -107,6 +143,7 @@ void		omniscience(t_mlx *env)
 //		if (tmp->x >= 0 && tmp->x < env->map_wdt && tmp->y >= 0 && tmp->y < env->map_hgt)
 //		{
 //		}
+		render_zombie(env, tmp);
 		tmp = tmp->next;
 	}
 	free(nodes);

@@ -6,16 +6,40 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:29:09 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/30 21:15:59 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/01 18:43:15 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
+void	print_lst(t_node *lst)
+{
+	t_node	*tmp;
+
+	if (!lst)
+		return ;
+	tmp = lst;
+	while (tmp)
+	{
+		printf("node %d, x = %d | y = %d | ggoal = %f\n", tmp->index, tmp->x, tmp->y, tmp->ggoal);
+		tmp = tmp->next;
+	}
+	printf("---------------------\n");
+	fflush(stdout);
+}
+
+void	swap_nodes(t_node *a, t_node *b)
+{
+	t_node	swap;
+
+	ft_memcpy(&swap, a, sizeof(t_node) - sizeof(t_node*));
+	ft_memcpy(a, b, sizeof(t_node) - sizeof(t_node*));
+	ft_memcpy(b, &swap, sizeof(t_node) - sizeof(t_node*));
+}
+
 void	sort_lst(t_node **lst)
 {
 	t_node	*tmp;
-	t_node	swap;
 	int		len;
 	int		i;
 
@@ -23,37 +47,48 @@ void	sort_lst(t_node **lst)
 	len = node_len(*lst);
 	if (len <= 1)
 		return ;
-	tmp = *lst;
-	while (i < len && tmp->next)
+	while (i <= len)
 	{
-		if (tmp->ggoal > tmp->next->ggoal)
+		tmp = *lst;
+		while (tmp->next)
 		{
-			swap = *tmp;
-			*tmp = *(tmp->next);
-			*(tmp->next) = swap;
+			if (tmp->ggoal > tmp->next->ggoal)
+				swap_nodes(tmp, tmp->next);
+			tmp = tmp->next;
 		}
 		i++;
-		tmp = tmp->next;
 	}
+
 }
 
-int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[2])
+void	reconstruct_path(t_node *end, float dir[4])
+{
+	t_node	*tmp;
+	t_node	*last;
+
+	tmp = end->parent;
+	last = end;
+	while (tmp && tmp->parent)
+	{
+		last = tmp;
+		tmp = tmp->parent;
+	}
+	dir[0] = (float)last->x + 0.5f - dir[2];
+	dir[1] = (float)last->y + 0.5f - dir[3];
+}
+
+int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[4])
 {
 	t_node	*current;
 	t_node	*set;
 	t_node	*n;
 	float	low_goal;
 	int		i;
-	(void)env;
-	(void)nodes;
 
 	set = NULL;
 	current = s_e[0];
 	if (node_pushback(&set, node_new(current)) != 0)
 		return (-1);
-
-	dir[0] = 0;
-	dir[1] = 0;
 
 	while (set)
 	{
@@ -68,8 +103,13 @@ int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[2])
 		current = set;
 		current->visited = true;
 
-		if (current->x == (int)env->player.x && current->y == (int)env->player.y)
-			break ;
+		if (current->x == (int)env->player.y && current->y == (int)env->player.x)
+		{
+//			printf("%d %d found player at %d %d\n", s_e[0]->x, s_e[0]->y, current->x, current->y);
+			reconstruct_path(current, dir);
+//			printf("FOUND at %d %d\n", current->x, current->y);
+			return (0);
+		}
 
 		i = 0;
 		while (i < 4)
@@ -78,24 +118,17 @@ int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[2])
 			{
 				n = ((t_node*)current->neighbours[i]);
 
-				printf("There1 %d\n", set->index);
-				if (!n->visited && !n->full)
-					node_pushback(&set, node_new(n));
-				printf("There2\n");
-
-				low_goal = current->lgoal + compute_dist(current->x, current->y, n->x, n->y);
-				if (low_goal < n->lgoal)
+				low_goal = current->lgoal + 1.0f;
+				if (!n->visited && !n->full && low_goal < n->lgoal)
 				{
-					n->parent = current;
+					n->parent = &nodes[current->index];
 					n->lgoal = low_goal;
 					n->ggoal = n->lgoal + compute_dist(current->x, current->y, n->x, n->y);
+					node_pushback(&set, node_new(n));
 				}
 			}
 			i++;
 		}
 	}
-//	printf("start : %d %d\nend : %d %d\n------------\n", s_e[0]->x, s_e[0]->y, s_e[1]->x, s_e[1]->y);
-
-//	reconstruct_path(end);
-	return (0);
+	return (1);
 }

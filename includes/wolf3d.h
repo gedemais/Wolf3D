@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/31 00:55:42 by demaisonc        ###   ########.fr       */
+/*   Updated: 2019/11/01 20:00:59 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@
 # define HGT 600
 # define WDT 800 
 
+# define NB_SPRITES 24
 # define WALL_NORTH 17
 # define WALL_SOUTH 18
 # define WALL_EST 19
 # define WALL_WEST 20
 # define MABOYE 22
+# define ZOMBIE NB_SPRITES - 3
 
 
 # define KEY_PRESS 2
@@ -35,7 +37,6 @@
 
 # define NB_THREADS 8
 
-# define NB_SPRITES 24
 # define NB_WEAPONS 4
 # define BMP_HEADER_SIZE 54
 
@@ -69,6 +70,8 @@
 # define WAVE_1 10
 # define WAVE_2 33
 # define WAVE_3 100
+
+# define PI 3.14159f
 
 # include "../libft/libft.h"
 # include "mlx.h"
@@ -134,6 +137,18 @@ typedef struct			s_cam
 	float				fov;
 }						t_cam;
 
+typedef struct			s_z_render
+{
+	float	z_angle;
+	float	cieling;
+	float	floor;
+	float	dist;
+	float	height;
+	float	ratio;
+	float	width;
+	float	middle;
+}						t_z_render;
+
 typedef struct			s_player
 {
 	int					hp;
@@ -151,6 +166,7 @@ struct			s_zombie
 {
 	int		damages;
 	int		hp;
+	int		refresh;
 	float	x;
 	float	y;
 	t_zombie	*next;
@@ -223,6 +239,7 @@ typedef struct			s_mlx
 ** Ray casting
 */
 char					*ray_casting(t_mlx *env);
+void					set_background(t_mlx *env);
 
 /*
 ** MLX functions
@@ -250,6 +267,7 @@ void				replace_pointer(int x, int y);
 */
 void				init_weapons(t_mlx *env);
 int					load_sprites(t_mlx *env);
+bool				do_copy(int color, char alph[4]);
 void				blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
 bool				*blit_alpha(void);
 
@@ -269,6 +287,7 @@ void					z_snap_node(t_zombie **lst, t_zombie *node);
 int						z_pushfront(t_zombie **lst, t_zombie *new);
 t_zombie				*z_lstnew(t_mlx *env);
 void					omniscience(t_mlx *env);
+void					render_zombie(t_mlx *env, t_zombie *z);
 
 /*
 ** A*
