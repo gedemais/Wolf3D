@@ -51,6 +51,8 @@ void	draw_minimap(t_mlx *env)
 {
 	unsigned int	i;
 	unsigned int	j;
+	float			x;
+	float			y;
 
 	i = 0;
 	while (i < env->map_hgt)
@@ -66,6 +68,17 @@ void	draw_minimap(t_mlx *env)
 	}
 	*color() = 0x00ff00;
 	draw_square(env, env->player.y * MINIMAP_SIZE, env->player.x * MINIMAP_SIZE, MINIMAP_SIZE);
+
+	x = env->player.x + 5 * sinf(env->player.cam.angle - PI / 8);
+	y = env->player.y + 5 * cosf(env->player.cam.angle - PI / 8);
+
+	ft_fill_pixel(env->img_data, y * MINIMAP_SIZE, x * MINIMAP_SIZE, *color());
+
+	x = env->player.x + 5 * sinf(env->player.cam.angle + PI / 8);
+	y = env->player.y + 5 * cosf(env->player.cam.angle + PI / 8);
+	ft_fill_pixel(env->img_data, y * MINIMAP_SIZE, x * MINIMAP_SIZE, *color());
+
+
 	*color() = 0x0000ff;
 	point_zombies(env);
 }

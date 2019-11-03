@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:29:09 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/01 18:43:15 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 05:04:21 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,7 @@ int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[4])
 
 		if (current->x == (int)env->player.y && current->y == (int)env->player.x)
 		{
-//			printf("%d %d found player at %d %d\n", s_e[0]->x, s_e[0]->y, current->x, current->y);
 			reconstruct_path(current, dir);
-//			printf("FOUND at %d %d\n", current->x, current->y);
 			return (0);
 		}
 
@@ -130,5 +128,5 @@ int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[4])
 			i++;
 		}
 	}
-	return (1);
+	return (0);
 }

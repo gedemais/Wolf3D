@@ -13,12 +13,39 @@ bool	do_copy(int color, char alph[4])
 	char		col[4];
 
 	ft_memcpy(&col, &color, sizeof(int));
-	ft_memcpy(&col, &color, sizeof(int));
 	diff = 0;
-	diff += ft_abs(col[0] - alph[0]);
 	diff += ft_abs(col[1] - alph[1]);
 	diff += ft_abs(col[2] - alph[2]);
-	return (diff < PRECISION ? false : true);
+	diff += ft_abs(col[3] - alph[3]);
+
+	if (diff < PRECISION)
+		return (false);
+	return (true);
+}
+
+void	alpha_filter(t_sprite *sp)
+{
+	int				x;
+	int				y;
+	int				color;
+	int				pos;
+	char			alph[4];
+
+	y = 0;
+	ft_memcpy(&alph[0], &sp->alpha, sizeof(int));
+	while (y < sp->height)
+	{
+		x = 0;
+		while (x < sp->width)
+		{
+			pos = (abs(y - 1) * 288 + x) * sizeof(int);
+			color = *(int*)&sp->frame[pos];
+			if (!do_copy(color, alph))
+				ft_memset(&sp->frame[pos], 0, sizeof(int));
+			x++;
+		}
+		y++;
+	}
 }
 
 void	blit_sprite(t_mlx *env, t_sprite sp, int x, int y)
@@ -97,5 +124,6 @@ int		load_sprites(t_mlx *env)
 		env->sprites[i].height /= 4;
 		i++;
 	}
+	alpha_filter(&env->sprites[ZOMBIE]);
 	return (0);
 }

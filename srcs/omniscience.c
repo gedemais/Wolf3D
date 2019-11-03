@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:06:27 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/01 19:02:42 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 05:04:05 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,13 @@ void		apply_a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], t_zombie *z)
 	tmp[1] = 0.0f;
 	tmp[2] = z->x;
 	tmp[3] = z->y;
-	//printf("Player : %f %f\n", env->player.x, env->player.y);
 	if (z->refresh == 0)
 	{
 		a_star(env, nodes, s_e, tmp);
-		z->refresh = 3;
+		z->refresh = 5;
 	}
 	else
 		z->refresh--;
-//	printf("Direction = %f %f\n", tmp[0], tmp[1]);
 	z->x += tmp[0] * speed;
 	z->y += tmp[1] * speed;
 }
@@ -52,14 +50,6 @@ void		fill_neighbours(t_mlx *env, t_node *nodes)
 			nodes[pos].neighbours[1] = (y < env->map_hgt - 1) ? &nodes[(y + 1) * env->map_wdt + x] : NULL;
 			nodes[pos].neighbours[2] = (x > 0) ? &nodes[y * env->map_wdt + (x - 1)] : NULL;
 			nodes[pos].neighbours[3] = (x < env->map_wdt - 1) ? &nodes[y * env->map_wdt + (x + 1)] : NULL;
-
-/*			printf("node %d :\nx = %d | y = %d\nvisited = %d\nfull = %d\n", nodes[pos].index, nodes[pos].x, nodes[pos].y, nodes[pos].visited, nodes[pos].full);
-			for (int i = 0; i < 4; i++)
-			{
-				if (nodes[pos].neighbours[i])
-					printf("%d ", ((t_node*)nodes[pos].neighbours[i])->index);
-			}
-			printf("\n------------\n");*/
 			x++;
 		}
 		y++;

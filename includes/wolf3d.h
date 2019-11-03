@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/01 20:00:59 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 05:04:27 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@
 
 # define NB_KEYS 260
 
-# define PRECISION 110
+# define PRECISION 10
 
 # define ESC_KEY 53
 # define SPACE_KEY 49

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/01 20:15:28 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 04:38:51 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static inline void	init_player(t_mlx *env)
 		env->player.y++;
 	}
 }
-
+
 static inline int		ft_set_env(t_mlx *env, char *map)
 {
 	if (parse_map(env, map) != 0
@@ -46,7 +46,7 @@ static inline int		ft_set_env(t_mlx *env, char *map)
 	ft_memset(&env->keys[0], false, sizeof(bool) * NB_KEYS);
 	init_player(env);
 	init_weapons(env);
-	env->nb_killed = 1;
+	env->nb_killed = 3;
 	return (0);
 }
 
