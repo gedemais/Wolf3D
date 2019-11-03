@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/01 19:52:04 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 19:30:57 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,8 @@ char	*ray_casting(t_mlx *env)
 //		ray.dist *= cosf(rectify) + 0.25;
 		dcieling = (float)(HGT / 2.0f) - (float)(HGT / ray.dist);
 		dfloor = (float)((float)HGT - dcieling);
+
+		env->z_buff[i] = ray.dist;
 		draw_col(env, i, (float[2]){dcieling, dfloor}, &ray);
 		i++;
 	}

@@ -1,23 +1,19 @@
 #include "wolf3d.h"
+/*
+void	barre_bounds(t_mlx *env, int padx, int pady)
+{
+	
+}*/
 
 void	barre_de_vie(t_mlx *env, int padx, int pady)
 {
-	unsigned int	x;
-	unsigned int	i;
+	unsigned int	y;
 
-	x = 0;
-	while (x < 200)
+	y =  0;
+	while (y < 200)
 	{
-		ft_fill_pixel(env->img_data, padx + x, pady, 0x0000ff);
-		ft_fill_pixel(env->img_data, padx + x, pady + 1, 0x0000ff);
-		i = 2;
-		while (i < 20)
-		{
-			ft_fill_pixel(env->img_data, padx + x, pady + i, i < 2 || (int)i > env->player.hp ? 0x0000ff : 0x00ff00);
-			i++;
-		}
-		ft_fill_pixel(env->img_data, padx + x, pady + i, 0x0000ff);
-		ft_fill_pixel(env->img_data, padx + x, pady + i + 1, 0x0000ff);
-		x++;
+		*color() = 0xff0000;
+		ft_draw_line(env, (int[2]){padx, pady}, (int[2]){padx + 200,  pady});
+		y++;
 	}
 }

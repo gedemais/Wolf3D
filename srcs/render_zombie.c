@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 19:02:57 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 04:08:45 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 19:37:00 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,11 @@ void	blit_zombie(t_mlx *env, t_sprite sp, t_z_render *r)
 			sample_y = y / r->height;
 			color = *(int*)&sp.frame[(abs((int)(sample_y * 288) - 1) * 288 + (int)(sample_x * 288)) * 4];
 			column = (int)(r->middle + x - (r->width / 2.0f));
-			if (color != 0 && column >= 0 && column < WDT)
+			if (color != 0 && column >= 0 && column < WDT && env->z_buff[column] >= r->dist)
+			{
+				env->z_buff[column] = r->dist;
 				ft_memcpy(&env->img_data[((int)(r->cieling + y - 1) * WDT * 4) + (column * 4)], &color, sizeof(int));
+			}
 			y++;
 		}
 		x++;

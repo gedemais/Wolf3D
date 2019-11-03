@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:12:13 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/01 16:19:54 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 19:49:45 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,5 +91,6 @@ t_zombie	*z_lstnew(t_mlx *env)
 	new->x = (float)env->spawns[spawn].x;
 	new->y = (float)env->spawns[spawn].y;
 	new->refresh = 5;
+	new->dlaps = 50;
 	return (new);
 }

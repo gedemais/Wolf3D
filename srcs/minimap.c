@@ -1,6 +1,6 @@
 #include "wolf3d.h"
 
-static inline int	*color(void)
+int		*color(void)
 {
 	static int	var = 0;
 
@@ -47,12 +47,27 @@ void	point_zombies(t_mlx *env)
 	}
 }
 
+void	draw_fov(t_mlx *env, t_player *p)
+{
+	float			x;
+	float			y;
+	
+	*color() = 0x00ff00;
+
+	x = p->x + 3 * sinf(env->player.cam.angle - PI / 8);
+	y = p->y + 3 * cosf(env->player.cam.angle - PI / 8);
+	ft_draw_line(env, (int[2]){y * MINIMAP_SIZE, x * MINIMAP_SIZE}, (int[2]){(int)p->y * MINIMAP_SIZE, (int)p->x * MINIMAP_SIZE});
+
+	x = p->x + 3 * sinf(env->player.cam.angle + PI / 8);
+	y = p->y + 3 * cosf(env->player.cam.angle + PI / 8);
+	ft_draw_line(env, (int[2]){y * MINIMAP_SIZE, x * MINIMAP_SIZE}, (int[2]){(int)p->y * MINIMAP_SIZE, (int)p->x * MINIMAP_SIZE});
+	draw_square(env, (p->y - 0.5f) * MINIMAP_SIZE, (p->x - 0.5f) * MINIMAP_SIZE, MINIMAP_SIZE);
+}
+
 void	draw_minimap(t_mlx *env)
 {
 	unsigned int	i;
 	unsigned int	j;
-	float			x;
-	float			y;
 
 	i = 0;
 	while (i < env->map_hgt)
@@ -66,19 +81,7 @@ void	draw_minimap(t_mlx *env)
 		}
 		i++;
 	}
-	*color() = 0x00ff00;
-	draw_square(env, env->player.y * MINIMAP_SIZE, env->player.x * MINIMAP_SIZE, MINIMAP_SIZE);
-
-	x = env->player.x + 5 * sinf(env->player.cam.angle - PI / 8);
-	y = env->player.y + 5 * cosf(env->player.cam.angle - PI / 8);
-
-	ft_fill_pixel(env->img_data, y * MINIMAP_SIZE, x * MINIMAP_SIZE, *color());
-
-	x = env->player.x + 5 * sinf(env->player.cam.angle + PI / 8);
-	y = env->player.y + 5 * cosf(env->player.cam.angle + PI / 8);
-	ft_fill_pixel(env->img_data, y * MINIMAP_SIZE, x * MINIMAP_SIZE, *color());
-
-
+	draw_fov(env, &env->player);
 	*color() = 0x0000ff;
 	point_zombies(env);
 }

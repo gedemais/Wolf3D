@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 05:04:27 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 19:40:24 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,14 @@
 # define HGT 600
 # define WDT 800 
 
-# define NB_SPRITES 24
+# define NB_SPRITES 25
 # define WALL_NORTH 17
 # define WALL_SOUTH 18
 # define WALL_EST 19
 # define WALL_WEST 20
-# define MABOYE 22
+# define MABOYE 23
 # define ZOMBIE NB_SPRITES - 3
+# define GAME_OVER NB_SPRITES - 4
 
 
 # define KEY_PRESS 2
@@ -72,6 +73,9 @@
 # define WAVE_3 100
 
 # define PI 3.14159f
+# define MPA ((t_mlx*)(param))
+# define IMG img_ptr
+# define IMGD img_data
 
 # include "../libft/libft.h"
 # include "mlx.h"
@@ -97,6 +101,18 @@ enum					e_weapon_type
 					W_MINIGUN = 13,
 					W_MAX = 14
 };
+
+typedef struct	s_draw
+{
+	int		dx;
+	int		dy;
+	int		j;
+	int		xinc;
+	int		yinc;
+	int		cumul;
+	int		x;
+	int		y;
+}				t_draw;
 
 typedef struct			s_sprite
 {
@@ -165,6 +181,7 @@ typedef struct s_zombie	t_zombie;
 struct			s_zombie
 {
 	int		damages;
+	int		dlaps;
 	int		hp;
 	int		refresh;
 	float	x;
@@ -215,6 +232,7 @@ typedef struct			s_mlx
 	t_bloc				**map;
 	t_sprite			*sprites;
 	t_zombie			*zombie;
+	float				z_buff[WDT];
 	t_weapon			weapons[W_MAX];
 	t_player			player;
 	t_pos				*spawns;
@@ -306,16 +324,14 @@ int						node_len(t_node *lst);
 void					draw_minimap(t_mlx *env);
 void					draw_square(t_mlx *env, int x, int y, int size);
 void					draw_reticle(t_mlx *env);
+void					ft_draw_line(void *param, int s[2], int e[2]);
 
 void					barre_de_vie(t_mlx *env, int padx, int pady);
 /*
 ** Sound
 */
 void					weapon_sound(char type);
-
-/*
-** Utils
-*/
-double					ft_sq(double nb);
+bool					game_over(t_mlx *env);
+int						*color(void);
 
 #endif

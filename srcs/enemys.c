@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:02 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/01 19:02:24 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 19:38:35 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		manage_waves(t_mlx *env)
 		return (W_MP40);
 	else*/
 	(void)env;
-		return (W_MP40);
+		return (W_GUN);
 }
 /*
 void	print_lst(t_zombie *lst)

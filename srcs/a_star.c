@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:29:09 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 05:04:21 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 19:17:04 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,23 +40,21 @@ void	swap_nodes(t_node *a, t_node *b)
 void	sort_lst(t_node **lst)
 {
 	t_node	*tmp;
-	int		len;
-	int		i;
+	bool	sort;
 
-	i = 0;
-	len = node_len(*lst);
-	if (len <= 1)
+	if (!*lst || !(*lst)->next)
 		return ;
-	while (i <= len)
+	sort = false;
+	while (!sort)
 	{
+		sort = true;
 		tmp = *lst;
 		while (tmp->next)
 		{
-			if (tmp->ggoal > tmp->next->ggoal)
+			if (tmp->ggoal > tmp->next->ggoal && !(sort = false))
 				swap_nodes(tmp, tmp->next);
 			tmp = tmp->next;
 		}
-		i++;
 	}
 
 }

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:06:27 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 05:04:05 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 20:02:47 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		apply_a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], t_zombie *z)
 	float	tmp[4];
 	float		speed;
 
-	speed = 0.25;
+	speed = 0.1;
 	tmp[0] = 0.0f;
 	tmp[1] = 0.0f;
 	tmp[2] = z->x;
@@ -128,8 +128,18 @@ void		omniscience(t_mlx *env)
 		env->start = &nodes[(int)tmp->y * env->map_wdt + (int)tmp->x];
 		env->start->lgoal = 0.0f;
 		env->start->ggoal = compute_dist(env->start->x, env->start->y, env->end->x, env->end->y);
-		apply_a_star(env, nodes, (t_node*[2]){env->start, env->end}, tmp);
-		
+		if (compute_dist(tmp->y, tmp->x, env->player.x, env->player.y) >= 1.5)
+			apply_a_star(env, nodes, (t_node*[2]){env->start, env->end}, tmp);
+		else
+		{
+			if (tmp->dlaps == 0)
+			{
+				printf("Hit !\n");
+				env->player.hp -= tmp->damages;
+				tmp->dlaps = 50;
+			}
+			tmp->dlaps--;
+		}
 //		if (tmp->x >= 0 && tmp->x < env->map_wdt && tmp->y >= 0 && tmp->y < env->map_hgt)
 //		{
 //		}
