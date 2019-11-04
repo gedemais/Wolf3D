@@ -110,7 +110,12 @@ void	*ray_threading(void *thread)
 	}
 	pthread_exit(NULL);
 }
-
+/*
+static inline int	relaunch(t_mlx *env, t_raythread[NB_THREADS])
+{
+		
+}
+*/
 char	*ray_thread(t_mlx *env)
 {
 	t_raythread	cores[NB_THREADS];
@@ -129,6 +134,8 @@ char	*ray_thread(t_mlx *env)
 	{
 		if (pthread_join(cores[i].thread, NULL))
 			return (NULL);
+//		if (relaunch(env, cores))
+//			return (NULL);
 		i++;
 	}
 	return (env->img_data);

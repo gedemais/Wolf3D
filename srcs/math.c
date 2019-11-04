@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:26 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 22:32:38 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 05:22:50 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,4 +39,9 @@ float	compute_dist(int ax, int ay, int bx, int by)
 	as = a * a;
 	bs = b * b;
 	return (fast_isr(as + bs));
+}
+
+float	relu(float n)
+{
+	return (n <= 0 ? 0 : n);
 }

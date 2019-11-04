@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 12:44:33 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 00:20:00 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 05:36:45 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,8 @@ void	apply_damages(t_mlx *env)
 	half_wdt = WDT / 2;
 	while (tmp)
 	{
-		if (fabs(half_wdt - tmp->mid) < tmp->width / 2)
+		if (fabs(half_wdt - tmp->mid) < (tmp->width / 2 - 50))
 		{
-			printf("%d\n", tmp->hp);
 			tmp->hp -= env->weapons[(int)env->weapon].damages;
 			break ;
 		}

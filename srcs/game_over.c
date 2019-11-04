@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/03 17:25:34 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 19:25:18 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 05:41:43 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ bool	game_over(t_mlx *env)
 		i = 0;
 	}
 	if (sprite)
-		blit_sprite(env, *sprite, 100, 100);
+	{
+		ft_memset(env->img_data, 30, sizeof(int) * WDT * HGT);
+		blit_sprite(env, *sprite, WDT / 2 - 144, HGT / 2 - 144);
+	}
 	i++;
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
 	return (dead);

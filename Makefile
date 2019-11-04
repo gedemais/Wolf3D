@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/11/04 03:15:54 by gedemais         ###   ########.fr        #
+#    Updated: 2019/11/04 04:10:36 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,6 @@ SRCS_NAME = main.c\
 			reticle.c\
 			a_star.c\
 			enemys.c\
-			ray_thread.c\
 			render_zombie.c\
 			omniscience.c\
 			game_over.c\

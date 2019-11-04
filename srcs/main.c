@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 01:36:51 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 05:17:29 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static inline void	init_player(t_mlx *env)
 	env->player.hp = 100;
 	env->player.cam.fov = 3.141 / 2;
 	env->player.speed = 0.1;
-	env->player.x = 37;
-	env->player.y = 38;
+	env->player.x = 10;
+	env->player.y = 10;
 }
 
 static inline int		ft_set_env(t_mlx *env, char *map)

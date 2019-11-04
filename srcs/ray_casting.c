@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 03:09:06 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 05:27:12 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,31 @@ void	set_background(t_mlx *env)
 	}
 }
 
+float	get_max_dist(t_mlx *env)
+{
+	t_z_render		r;
+	unsigned int	i;
+	unsigned int	j;
+	float			ret;
+
+	i = 0;
+	ret = 1000000.0f;
+	while (i < env->map_hgt)
+	{
+		j = 0;
+		while (j < env->map_wdt)
+		{
+			if (env->map[i][j].type != BLOC_VOID && is_in_fov(env, (float)i + 0.5f, (float)j + 0.5f, &r) && r.dist < ret)
+				ret = r.dist;
+			j++;
+		}
+		i++;
+	}
+	if (ret == 1000000.0f)
+		return (0.0f);
+	return (relu(ret - 2.0f));
+}
+
 char	*ray_casting(t_mlx *env)
 {
 	t_ray			ray;
@@ -75,9 +100,11 @@ char	*ray_casting(t_mlx *env)
 	float			dcieling;
 	float			dfloor;
 	float			rectify;
+	float			max;
 
 	i = 0;
 	p = ((t_player*)&env->player);
+	max = get_max_dist(env);
 	while (i < WDT)
 	{
 		ray.angle = (float)(p->cam.angle - p->cam.fov / 2) + (float)i / (float)WDT * p->cam.fov;
@@ -85,7 +112,7 @@ char	*ray_casting(t_mlx *env)
 
 		p->eye_x = sin(ray.angle);
 		p->eye_y = cos(ray.angle);
-		ray.dist = 0;
+		ray.dist = max;
 		while (!ray.hit)
 		{
 			ray.dist += RAY_STEP;

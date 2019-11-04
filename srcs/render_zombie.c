@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 19:02:57 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 23:48:55 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 04:51:06 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ bool	is_in_fov(t_mlx *env, float zx, float zy, t_z_render *r)
 	if (r->z_angle < -PI)
 		r->z_angle += PI * 2.0f;
 	if (r->z_angle > PI)
-		r->z_angle -= PI * 2.0f; return (fabs(r->z_angle) < env->player.cam.fov / 2.0f);
+		r->z_angle -= PI * 2.0f;
+	return (fabs(r->z_angle) < env->player.cam.fov / 2.0f);
 }
 
 void	blit_zombie(t_mlx *env, t_sprite sp, t_z_render *r)

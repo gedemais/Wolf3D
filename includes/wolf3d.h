@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 03:05:05 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 05:23:01 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 
 # define MAX_PATH 256
 
-# define NB_THREADS 8
+# define NB_THREADS 16
 
 # define NB_WEAPONS 4
 # define BMP_HEADER_SIZE 54
@@ -76,6 +76,8 @@
 # define MPA ((t_mlx*)(param))
 # define IMG img_ptr
 # define IMGD img_data
+
+# define MIN_THREAD_WORK 10
 
 # include "../libft/libft.h"
 # include "mlx.h"
@@ -310,6 +312,7 @@ int					load_sprites(t_mlx *env);
 bool				do_copy(int color, char alph[4]);
 void				blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
 bool				*blit_alpha(void);
+bool				is_in_fov(t_mlx *env, float zx, float zy, t_z_render *r);
 
 /*
 ** Parsing
@@ -357,6 +360,7 @@ bool					game_over(t_mlx *env);
 int						*color(void);
 
 float					fast_isr(float n);
+float					relu(float n);
 char					*ray_thread(t_mlx *env);
 
 #endif
