@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:34 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/24 21:28:31 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 08:04:36 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,33 +42,23 @@ int		start_check(t_mlx *env)
 	unsigned int	i;
 	unsigned int	j;
 
-	i = 0;
-	while (env->file[i] && env->file[i] != '\n')
-	{
+	i = -1;
+	while (env->file[++i] && env->file[i] != '\n')
 		env->map_wdt += ft_isdigit(env->file[i]) ? 1 : 0;
-		i++;
-	}
-	i = 0;
-	while (env->file[i])
+	i = -1;
+	while (env->file[++i])
 	{
 		j = 0;
 		while (env->file[i] && env->file[i] != '\n')
 		{
 			if (!ft_isdigit(env->file[i]) && !ft_is_whitespace(env->file[i]))
-			{
-				printf("unknown character\n");
 				return (-1);
-			}
 			i++;
 			j += ft_isdigit(env->file[i]) ? 1 : 0;
 		}
 		if (j != env->map_wdt - 1 || j == 0)
-		{
-				printf("invalid line length\n");
 			return (-1);
-		}
 		env->map_hgt++;
-		i++;
 	}
 	return (0);
 }

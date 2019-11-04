@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:29:09 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 22:34:15 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 07:24:42 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,24 +39,24 @@ void	swap_nodes(t_node *a, t_node *b)
 
 void	sort_lst(t_node **lst)
 {
+	t_node	*start;
 	t_node	*tmp;
-	bool	sort;
-
-	if (!*lst || !(*lst)->next)
-		return ;
-	sort = false;
-	while (!sort)
+	t_node	*i;
+	
+	start = *lst;
+	while (start->next)
 	{
-		sort = true;
-		tmp = *lst;
-		while (tmp->next)
+		i = start->next;
+		tmp = start->next;
+		while (i)
 		{
-			if (tmp->ggoal > tmp->next->ggoal && !(sort = false))
-				swap_nodes(tmp, tmp->next);
-			tmp = tmp->next;
+			if (i->ggoal < tmp->ggoal)
+				tmp = i;
+			i = i->next;
 		}
+		swap_nodes(start, tmp);
+		start = start->next;
 	}
-
 }
 
 void	reconstruct_path(t_node *end, float dir[4])

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 12:44:33 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 05:36:45 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 07:38:19 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,6 @@ void	init_weapons(t_mlx *env)
 	env->weapons[W_MINIGUN].nb_frames = 2;
 }
 
-
-
 void	apply_damages(t_mlx *env)
 {
 	t_zombie	*tmp;
@@ -48,8 +46,13 @@ void	apply_damages(t_mlx *env)
 	half_wdt = WDT / 2;
 	while (tmp)
 	{
-		if (fabs(half_wdt - tmp->mid) < (tmp->width / 2 - 50))
+		if (fabs(half_wdt - tmp->mid) < (tmp->width / 2 - (60 * tmp->width / 288)) && !env->z_buff[WDT / 2].wall)
 		{
+			if (env->weapon == W_KNIFE && compute_dist(env->player.y, env->player.x, tmp->x, tmp->y) > 3)
+			{
+				tmp = tmp->next;
+				continue ;
+			}
 			tmp->hp -= env->weapons[(int)env->weapon].damages;
 			break ;
 		}

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 05:23:01 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 07:31:14 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,12 @@ struct			s_zombie
 	t_zombie	*prev;
 };
 
+typedef struct	s_z_buff
+{
+	float		val;
+	bool		wall;
+}				t_z_buff;
+
 typedef struct s_node	t_node;
 
 struct s_node
@@ -242,7 +248,7 @@ typedef struct			s_mlx
 	t_bloc				**map;
 	t_sprite			*sprites;
 	t_zombie			*zombie;
-	float				z_buff[WDT];
+	t_z_buff			z_buff[WDT];
 	t_weapon			weapons[W_MAX];
 	t_player			player;
 	t_pos				*spawns;
@@ -262,20 +268,6 @@ typedef struct			s_mlx
 	int				s_l;
 	int				endian;
 }						t_mlx;
-
-typedef struct			s_raythread
-{
-	pthread_t			thread;
-	t_mlx				*env;
-	t_ray				ray;
-	t_player			p;
-	unsigned int		start;
-	unsigned int		stop;
-	unsigned int		index;
-	float				dcieling;
-	float				dfloor;
-	float				rectify;
-}						t_raythread;
 
 /*
 ** Ray casting

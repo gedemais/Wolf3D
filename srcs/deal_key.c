@@ -2,7 +2,7 @@
 
 void	handle_keys(t_mlx *env)
 {
-	env->player.speed = env->keys[SHIFT_KEY] ? 0.2 : 0.1;
+	env->player.speed = env->keys[SHIFT_KEY] ? 0.15 : 0.1;
 	if (env->keys[UP_KEY] || env->keys[KEY_W])
 	{
 		env->player.x += sin(env->player.cam.angle) * env->player.speed;
