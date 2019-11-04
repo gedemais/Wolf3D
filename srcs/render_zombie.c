@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/01 19:02:57 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 19:37:00 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 23:48:55 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	is_in_fov(t_mlx *env, float zx, float zy, t_z_render *r)
 	vec_x = zx - env->player.x;
 	vec_y = zy - env->player.y;
 
-	r->dist = sqrtf(vec_x * vec_x + vec_y * vec_y);
+	r->dist = fast_isr(vec_x * vec_x + vec_y * vec_y);
 	eye_x = sinf(env->player.cam.angle);
 	eye_y = cosf(env->player.cam.angle);
 
@@ -77,5 +77,7 @@ void	render_zombie(t_mlx *env, t_zombie *z)
 	r.width = r.height / r.ratio;
 	r.middle = (0.5f * (r.z_angle / (env->player.cam.fov / 2.0f)) + 0.5f) * (float)WDT;
 
+	z->mid = r.middle;
+	z->width = r.width;
 	blit_zombie(env, env->sprites[ZOMBIE], &r);
 }

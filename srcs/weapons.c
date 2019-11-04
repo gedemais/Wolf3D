@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 12:44:33 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 19:56:43 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 00:20:00 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,25 @@ void	init_weapons(t_mlx *env)
 }
 
 
-/*
+
 void	apply_damages(t_mlx *env)
 {
-	
-}*/
+	t_zombie	*tmp;
+	int			half_wdt;
+
+	tmp = env->zombie;
+	half_wdt = WDT / 2;
+	while (tmp)
+	{
+		if (fabs(half_wdt - tmp->mid) < tmp->width / 2)
+		{
+			printf("%d\n", tmp->hp);
+			tmp->hp -= env->weapons[(int)env->weapon].damages;
+			break ;
+		}
+		tmp = tmp->next;
+	}
+}
 
 void	shot(t_mlx *env, bool *done)
 {
@@ -57,11 +71,11 @@ void	shot(t_mlx *env, bool *done)
 	}
 	else
 	{
+		apply_damages(env);
 		blit_sprite(env, env->sprites[(int)env->weapon], (WDT / 2 - env->sprites[(int)env->weapon].width / 2), HGT - env->sprites[(int)env->weapon].height);
 		step = 0;
 		*done = env->weapons[(int)env->weapon].full_auto ? false : true;
 	}
-//	apply_damages(env);
 }
 
 void	handle_weapon(t_mlx *env)

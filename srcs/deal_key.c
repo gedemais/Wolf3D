@@ -63,7 +63,8 @@ int		base(void *param)
 		return (0);
 	handle_keys(env);
 	set_background(env);
-	env->img_data = ray_casting(env);
+//	env->img_data = ray_casting(env);
+	env->img_data = ray_thread(env);
 	if (env->war)
 		handle_enemys(env);
 	if (env->weapon < W_MAX)

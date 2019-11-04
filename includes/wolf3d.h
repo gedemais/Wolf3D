@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 19:40:24 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 03:05:05 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@
 # define NB_WEAPONS 4
 # define BMP_HEADER_SIZE 54
 
-# define MINIMAP_SIZE 4
+# define MINIMAP_SIZE 3
 
 # define RAY_STEP 0.01f
 
@@ -101,6 +101,12 @@ enum					e_weapon_type
 					W_MINIGUN = 13,
 					W_MAX = 14
 };
+
+typedef union	u_isr
+{
+	float		f;
+	uint32_t	i;
+}				t_isr;
 
 typedef struct	s_draw
 {
@@ -186,6 +192,8 @@ struct			s_zombie
 	int		refresh;
 	float	x;
 	float	y;
+	float	mid;
+	float	width;
 	t_zombie	*next;
 	t_zombie	*prev;
 };
@@ -252,6 +260,20 @@ typedef struct			s_mlx
 	int				s_l;
 	int				endian;
 }						t_mlx;
+
+typedef struct			s_raythread
+{
+	pthread_t			thread;
+	t_mlx				*env;
+	t_ray				ray;
+	t_player			p;
+	unsigned int		start;
+	unsigned int		stop;
+	unsigned int		index;
+	float				dcieling;
+	float				dfloor;
+	float				rectify;
+}						t_raythread;
 
 /*
 ** Ray casting
@@ -333,5 +355,8 @@ void					barre_de_vie(t_mlx *env, int padx, int pady);
 void					weapon_sound(char type);
 bool					game_over(t_mlx *env);
 int						*color(void);
+
+float					fast_isr(float n);
+char					*ray_thread(t_mlx *env);
 
 #endif

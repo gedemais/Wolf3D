@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/11/03 21:30:31 by gedemais         ###   ########.fr        #
+#    Updated: 2019/11/04 03:15:54 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,8 +24,8 @@ SRCS_NAME = main.c\
 			minimap.c\
 			reticle.c\
 			a_star.c\
-			replace_pointer.m\
 			enemys.c\
+			ray_thread.c\
 			render_zombie.c\
 			omniscience.c\
 			game_over.c\
@@ -71,7 +71,7 @@ all : $(MLX_PATH) $(LIB) $(NAME) $(INC)
 
 $(NAME) : $(MLX) $(INC) $(LIB_PATH) $(SRCS)
 	@echo "Making $(RED)Wolfd3D...$(DEF)"
-	@$(CC) $(CFLAGS) $(OFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) -L minilibx_macos/ minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
+	@$(CC) $(CFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) -L minilibx_macos/ minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
 	@echo "$(GRE)Done !$(DEF)"
 
 $(LIB) :

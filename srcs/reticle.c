@@ -17,14 +17,14 @@ void	draw_reticle(t_mlx *env)
 	y = halfs[2] + halfs[0];
 	while (++i < x)
 	{
-		ft_fill_pixel(env->img_data, i, halfs[2], 0xff0000);
-		ft_fill_pixel(env->img_data, i, halfs[2] - 1, 0xff0000);
-		ft_fill_pixel(env->img_data, i, halfs[2] + 1, 0xff0000);
+		ft_fill_pixel(env->img_data, i, halfs[2], 0xffffff);
+		ft_fill_pixel(env->img_data, i, halfs[2] - 1, 0xffffff);
+		ft_fill_pixel(env->img_data, i, halfs[2] + 1, 0xffffff);
 	}
 	while (++j < y)
 	{
-		ft_fill_pixel(env->img_data, halfs[1], j, 0xff0000);
-		ft_fill_pixel(env->img_data, halfs[1] - 1, j, 0xff0000);
-		ft_fill_pixel(env->img_data, halfs[1] + 1, j, 0xff0000);
+		ft_fill_pixel(env->img_data, halfs[1], j, 0xffffff);
+		ft_fill_pixel(env->img_data, halfs[1] - 1, j, 0xffffff);
+		ft_fill_pixel(env->img_data, halfs[1] + 1, j, 0xffffff);
 	}
 }

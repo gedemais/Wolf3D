@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:06:27 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 20:02:47 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 23:31:22 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,14 +132,14 @@ void		omniscience(t_mlx *env)
 			apply_a_star(env, nodes, (t_node*[2]){env->start, env->end}, tmp);
 		else
 		{
-			if (tmp->dlaps == 0)
+			if (tmp->dlaps <= 0)
 			{
 				printf("Hit !\n");
 				env->player.hp -= tmp->damages;
 				tmp->dlaps = 50;
 			}
-			tmp->dlaps--;
 		}
+		tmp->dlaps--;
 //		if (tmp->x >= 0 && tmp->x < env->map_wdt && tmp->y >= 0 && tmp->y < env->map_hgt)
 //		{
 //		}

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:02 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 19:38:35 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/04 00:22:36 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 int		manage_waves(t_mlx *env)
 {
-/*	if (env->nb_killed < WAVE_1)
+	if (env->nb_killed < WAVE_1)
 		return (W_KNIFE);
 	else if (env->nb_killed < WAVE_2)
 		return (W_GUN);
 	else if (env->nb_killed < WAVE_3)
 		return (W_MP40);
-	else*/
-	(void)env;
-		return (W_GUN);
+	else
+		return (W_MINIGUN);
 }
 /*
 void	print_lst(t_zombie *lst)
@@ -74,6 +73,7 @@ void	handle_enemys(t_mlx *env)
 	static int	laps = 0;
 
 	env->weapon = manage_waves(env);
+	death_priest(env);
 	omniscience(env);
 	if (env->nb_killed <= z_lstlen(env->zombie))
 		return ;

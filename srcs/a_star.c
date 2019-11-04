@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:29:09 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 19:17:04 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/03 22:34:15 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[4])
 				{
 					n->parent = &nodes[current->index];
 					n->lgoal = low_goal;
-					n->ggoal = n->lgoal + compute_dist(current->x, current->y, n->x, n->y);
+					n->ggoal = n->lgoal + 1;
 					node_pushback(&set, node_new(n));
 				}
 			}
