@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 08:03:41 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 00:58:51 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define WOLF3D_H
 
 # define HGT 600
-# define WDT 800 
+# define WDT 800
 
 # define NB_SPRITES 21
 # define PRECISION 10
@@ -62,139 +62,138 @@
 # include <time.h>
 # include "keys.h"
 
-enum			e_bloc_type
+enum					e_bloc_type
 {
-				BLOC_VOID,
-				BLOC_FULL,
-				BLOC_SPAWN,
-				BLOC_MAX
+	BLOC_VOID,
+	BLOC_FULL,
+	BLOC_SPAWN,
+	BLOC_MAX
 };
 
-enum			e_weapon_type
+enum					e_weapon_type
 {
-				W_KNIFE,
-				W_GUN = 4,
-				W_MP40 = 7,
-				W_MINIGUN = 10,
-				W_MAX = 12
+	W_KNIFE,
+	W_GUN = 4,
+	W_MP40 = 7,
+	W_MINIGUN = 10,
+	W_MAX = 12
 };
 
-typedef union	u_isr
+typedef union			u_isr
 {
-	float		f;
-	uint32_t	i;
-}				t_isr;
+	float				f;
+	uint32_t			i;
+}						t_isr;
 
-typedef struct	s_draw
+typedef struct			s_draw
 {
-	int			dx;
-	int			dy;
-	int			j;
-	int			xinc;
-	int			yinc;
-	int			cumul;
-	int			x;
-	int			y;
-}				t_draw;
+	int					dx;
+	int					dy;
+	int					j;
+	int					xinc;
+	int					yinc;
+	int					cumul;
+	int					x;
+	int					y;
+}						t_draw;
 
-typedef struct		s_sprite
+typedef struct			s_sprite
 {
-	void			*frame;
-	void			*ptr;
-	int				height;
-	int				width;
-	int				alpha;
-}					t_sprite;
+	void				*frame;
+	void				*ptr;
+	int					height;
+	int					width;
+	int					alpha;
+}						t_sprite;
 
-typedef struct		s_ray
+typedef struct			s_ray
 {
-	float			angle;
-	float			dist;
-	float			hit_x;
-	float			hit_y;
-	float			bloc_mx;
-	float			bloc_my;
-	float			bloc_angle;
-	float			sample_x;
-	float			sample_y;
-	int				sprite;
-	int				test_x;
-	int				test_y;
-	int				hit;
-}					t_ray;
+	float				angle;
+	float				dist;
+	float				hit_x;
+	float				hit_y;
+	float				bloc_mx;
+	float				bloc_my;
+	float				bloc_angle;
+	float				sample_x;
+	float				sample_y;
+	int					sprite;
+	int					test_x;
+	int					test_y;
+	int					hit;
+}						t_ray;
 
-typedef struct		s_bloc
+typedef struct			s_bloc
 {
-	char			type;
-//	union pr contenir les params
-}					t_bloc;
+	char				type;
+}						t_bloc;
 
-typedef struct		s_cam
+typedef struct			s_cam
 {
-	float			height;
-	float			angle;
-	float			fov;
-}					t_cam;
+	float				height;
+	float				angle;
+	float				fov;
+}						t_cam;
 
-typedef struct		s_z_render
+typedef struct			s_z_render
 {
-	float			z_angle;
-	float			cieling;
-	float			floor;
-	float			dist;
-	float			height;
-	float			ratio;
-	float			width;
-	float			middle;
-}					t_z_render;
+	float				z_angle;
+	float				cieling;
+	float				floor;
+	float				dist;
+	float				height;
+	float				ratio;
+	float				width;
+	float				middle;
+}						t_z_render;
 
-typedef struct		s_player
+typedef struct			s_player
 {
-	int				hp;
-	float			speed;
-	float			x;
-	float			y;
-	float			eye_x;
-	float			eye_y;
-	t_cam			cam;
-}					t_player;
+	int					hp;
+	float				speed;
+	float				x;
+	float				y;
+	float				eye_x;
+	float				eye_y;
+	t_cam				cam;
+}						t_player;
 
 typedef struct s_zombie	t_zombie;
 
-struct			s_zombie
+struct					s_zombie
 {
-	int		damages;
-	int		dlaps;
-	int		hp;
-	int		refresh;
-	float	x;
-	float	y;
-	float	mid;
-	float	width;
-	t_zombie	*next;
-	t_zombie	*prev;
+	int					damages;
+	int					dlaps;
+	int					hp;
+	int					refresh;
+	float				x;
+	float				y;
+	float				mid;
+	float				width;
+	t_zombie			*next;
+	t_zombie			*prev;
 };
 
-typedef struct	s_z_buff
+typedef struct			s_z_buff
 {
-	float		val;
-	bool		wall;
-}				t_z_buff;
+	float				val;
+	bool				wall;
+}						t_z_buff;
 
 typedef struct s_node	t_node;
 
-struct s_node
+struct					s_node
 {
-	float	ggoal;
-	float	lgoal;
-	int		x;
-	int		y;
-	t_node	*n[4];
-	t_node	*parent;
-	int		index;
-	bool	full;
-	bool	visited;
-	t_node	*next;
+	float				ggoal;
+	float				lgoal;
+	int					x;
+	int					y;
+	t_node				*n[4];
+	t_node				*parent;
+	int					index;
+	bool				full;
+	bool				visited;
+	t_node				*next;
 };
 
 typedef struct			s_pos
@@ -205,13 +204,13 @@ typedef struct			s_pos
 
 typedef struct			s_weapon
 {
-	int				damages;
-	int				cadency;
-	int				nb_frames;
-	int				speed;
-	bool			full_auto;
-	char			type;
-}				t_weapon;
+	int					damages;
+	int					cadency;
+	int					nb_frames;
+	int					speed;
+	bool				full_auto;
+	char				type;
+}						t_weapon;
 
 typedef struct			s_math
 {
@@ -247,11 +246,11 @@ typedef struct			s_mlx
 	unsigned int		map_hgt;
 	unsigned int		map_wdt;
 	char				weapon;
-	int				nb_killed;
+	int					nb_killed;
 	bool				war;
-	int				bpp;
-	int				s_l;
-	int				endian;
+	int					bpp;
+	int					s_l;
+	int					endian;
 }						t_mlx;
 
 /*
@@ -271,26 +270,26 @@ void					ft_fill_texture(char *img_str, int x, int y, int color);
 /*
 ** Events
 */
-int					press_key(int key, void *param);
-int					release_key(int key, void *param);
-int					pos(int x, int y, void *param);
-int					release(int button, int x, int y, void *param);
-int					press(int button, int x, int y, void *param);
-int					position(int x, int y, void *param);
-int					base(void *param);
-void				handle_enemys(t_mlx *env);
-void				handle_weapon(t_mlx *env);
-void				replace_pointer(int x, int y);
+int						press_key(int key, void *param);
+int						release_key(int key, void *param);
+int						pos(int x, int y, void *param);
+int						release(int button, int x, int y, void *param);
+int						press(int button, int x, int y, void *param);
+int						position(int x, int y, void *param);
+int						base(void *param);
+void					handle_enemys(t_mlx *env);
+void					handle_weapon(t_mlx *env);
+void					replace_pointer(int x, int y);
 
 /*
-** Weapons 
+** Weapons
 */
-void				init_weapons(t_mlx *env);
-int					load_sprites(t_mlx *env);
-bool				do_copy(int color, char alph[4]);
-void				blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
-bool				*blit_alpha(void);
-bool				is_in_fov(t_mlx *env, float zx, float zy, t_z_render *r);
+void					init_weapons(t_mlx *env);
+int						load_sprites(t_mlx *env);
+bool					do_copy(int color, char alph[4]);
+void					blit_sprite(t_mlx *env, t_sprite sp, int x, int y);
+bool					*blit_alpha(void);
+bool					is_in_fov(t_mlx *e, float zx, float zy, t_z_render *r);
 
 /*
 ** Parsing
@@ -313,7 +312,7 @@ void					render_zombie(t_mlx *env, t_zombie *z);
 /*
 ** A*
 */
-int						a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[2]);
+int						a_star(t_mlx *e, t_node *n, t_node *s[2], float dir[2]);
 float					compute_dist(int ax, int ay, int bx, int by);
 
 t_node					*node_new(t_node *src);
@@ -339,6 +338,5 @@ int						*color(void);
 
 float					fast_isr(float n);
 float					relu(float n);
-char					*ray_thread(t_mlx *env);
 
 #endif
