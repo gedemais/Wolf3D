@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 12:44:33 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 07:38:19 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/15 07:57:14 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void	init_weapons(t_mlx *env)
 {
-	env->weapon = W_MP40;
 	env->weapons[W_KNIFE].cadency = 10;
 	env->weapons[W_KNIFE].damages = 20;
 	env->weapons[W_KNIFE].full_auto = false;
@@ -40,15 +39,15 @@ void	init_weapons(t_mlx *env)
 void	apply_damages(t_mlx *env)
 {
 	t_zombie	*tmp;
-	int			half_wdt;
 
 	tmp = env->zombie;
-	half_wdt = WDT / 2;
 	while (tmp)
 	{
-		if (fabs(half_wdt - tmp->mid) < (tmp->width / 2 - (60 * tmp->width / 288)) && !env->z_buff[WDT / 2].wall)
+		if (fabs(env->math.half_wdt - tmp->mid) < (tmp->width / 2 -
+			(60 * tmp->width / 288)) && !env->z_buff[env->math.half_wdt].wall)
 		{
-			if (env->weapon == W_KNIFE && compute_dist(env->player.y, env->player.x, tmp->x, tmp->y) > 3)
+			if (env->weapon == W_KNIFE && compute_dist(env->player.y,
+				env->player.x, tmp->x, tmp->y) > 3.0f)
 			{
 				tmp = tmp->next;
 				continue ;
@@ -60,38 +59,51 @@ void	apply_damages(t_mlx *env)
 	}
 }
 
-void	shot(t_mlx *env, bool *done)
+void	shot(t_mlx *env, bool *done, bool *in)
 {
 	static int	step = 0;
-	int		speed;
+	int			speed;
+	int			sp;
 
 	speed = env->weapons[(int)env->weapon].speed;
 	if (step / speed < env->weapons[(int)env->weapon].nb_frames)
 	{
-		blit_sprite(env, env->sprites[(int)env->weapon + step / speed + 2], (WDT / 2 - env->sprites[(int)env->weapon + step / speed + 2].width / 2), HGT - env->sprites[(int)env->weapon + step / speed + 2].height);
+		sp = (int)env->weapon + step / speed + 1;
+		blit_sprite(env, env->sprites[sp], (env->math.half_wdt -
+			env->sprites[sp].width / 2), HGT - env->sprites[sp].height);
 		step++;
 	}
 	else
 	{
 		apply_damages(env);
-		blit_sprite(env, env->sprites[(int)env->weapon], (WDT / 2 - env->sprites[(int)env->weapon].width / 2), HGT - env->sprites[(int)env->weapon].height);
+		blit_sprite(env, env->sprites[(int)env->weapon], (env->math.half_wdt -
+			env->sprites[(int)env->weapon].width / 2), HGT -
+			env->sprites[(int)env->weapon].height);
 		step = 0;
 		*done = env->weapons[(int)env->weapon].full_auto ? false : true;
 	}
+	*in = *done ? false : true;
 }
 
 void	handle_weapon(t_mlx *env)
 {
 	static bool		stop = false;
+	static bool		in = false;
 	int				i;
 
 	i = 0;
 	draw_reticle(env);
 	*blit_alpha() = false;
-	if (env->keys[SPACE_KEY] && !stop)
-		shot(env, &stop);
+	if ((env->keys[SPACE_KEY] && !stop)
+		|| (!env->weapons[(int)env->weapon].full_auto && in))
+		shot(env, &stop, &in);
 	else
-		blit_sprite(env, env->sprites[(int)env->weapon], (WDT / 2 - env->sprites[(int)env->weapon].width / 2), HGT - env->sprites[(int)env->weapon].height);
+	{
+		in = false;
+		blit_sprite(env, env->sprites[(int)env->weapon],
+			(WDT / 2 - env->sprites[(int)env->weapon].width / 2),
+			HGT - env->sprites[(int)env->weapon].height);
+	}
 	if (!env->keys[SPACE_KEY])
 		stop = false;
 }

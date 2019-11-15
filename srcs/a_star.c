@@ -6,27 +6,11 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 13:29:09 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 07:24:42 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/15 06:43:57 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
-
-void	print_lst(t_node *lst)
-{
-	t_node	*tmp;
-
-	if (!lst)
-		return ;
-	tmp = lst;
-	while (tmp)
-	{
-		printf("node %d, x = %d | y = %d | ggoal = %f\n", tmp->index, tmp->x, tmp->y, tmp->ggoal);
-		tmp = tmp->next;
-	}
-	printf("---------------------\n");
-	fflush(stdout);
-}
 
 void	swap_nodes(t_node *a, t_node *b)
 {
@@ -42,7 +26,7 @@ void	sort_lst(t_node **lst)
 	t_node	*start;
 	t_node	*tmp;
 	t_node	*i;
-	
+
 	start = *lst;
 	while (start->next)
 	{
@@ -59,7 +43,7 @@ void	sort_lst(t_node **lst)
 	}
 }
 
-void	reconstruct_path(t_node *end, float dir[4])
+int		reconstruct_path(t_node *end, float dir[4])
 {
 	t_node	*tmp;
 	t_node	*last;
@@ -73,58 +57,53 @@ void	reconstruct_path(t_node *end, float dir[4])
 	}
 	dir[0] = (float)last->x + 0.5f - dir[2];
 	dir[1] = (float)last->y + 0.5f - dir[3];
+	return (0);
+}
+
+void	explore_neighbours(t_node *set, t_node *nodes, t_node *current)
+{
+	t_node	*n;
+	float	low_goal;
+	int		i;
+
+	i = -1;
+	while (++i < 4)
+		if (current->n[i])
+		{
+			n = ((t_node*)current->n[i]);
+			low_goal = current->lgoal + 1.0f;
+			if (!n->visited && !n->full && low_goal < n->lgoal)
+			{
+				n->parent = &nodes[current->index];
+				n->lgoal = low_goal;
+				n->ggoal = n->lgoal + 1.0f;
+				node_pushback(&set, node_new(n));
+			}
+		}
 }
 
 int		a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], float dir[4])
 {
 	t_node	*current;
 	t_node	*set;
-	t_node	*n;
-	float	low_goal;
-	int		i;
 
 	set = NULL;
 	current = s_e[0];
 	if (node_pushback(&set, node_new(current)) != 0)
 		return (-1);
-
 	while (set)
 	{
 		sort_lst(&set);
-
 		while (set && set->visited)
 			node_pop(&set);
-
 		if (!set)
-			break;
-
+			break ;
 		current = set;
 		current->visited = true;
-
-		if (current->x == (int)env->player.y && current->y == (int)env->player.x)
-		{
-			reconstruct_path(current, dir);
+		if (current->x == (int)env->player.y && current->y == (int)env->player.x
+			&& reconstruct_path(current, dir) == 0)
 			return (0);
-		}
-
-		i = 0;
-		while (i < 4)
-		{
-			if (current->neighbours[i])
-			{
-				n = ((t_node*)current->neighbours[i]);
-
-				low_goal = current->lgoal + 1.0f;
-				if (!n->visited && !n->full && low_goal < n->lgoal)
-				{
-					n->parent = &nodes[current->index];
-					n->lgoal = low_goal;
-					n->ggoal = n->lgoal + 1;
-					node_pushback(&set, node_new(n));
-				}
-			}
-			i++;
-		}
+		explore_neighbours(set, nodes, current);
 	}
 	return (0);
 }

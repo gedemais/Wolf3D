@@ -6,40 +6,34 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 07:59:06 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/15 07:39:50 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	ft_fill_texture(char *img_str, int x, int y, int color)
-{
-	int		pos;
-
-	if (x >= WDT || x < 0 || y >= HGT || y < 0)
-		return ;
-	pos = (abs(y - 1) * WDT + x) * sizeof(int);
-	img_str[pos + 2] = color >> 16 & 255;
-	img_str[pos + 1] = color >> 8 & 255;
-	img_str[pos] = color & 255;
-}
-
 void	draw_col(t_mlx *env, unsigned int x, float updown[2], t_ray *ray)
 {
 	int				pos;
+	float			sub;
+	int				xscale;
 	unsigned int	y;
 
 	y = 0;
+	sub = updown[1] - updown[0];
+	xscale = (ray->sample_x * 288);
 	while (y < HGT)
 	{
 		if (y >= updown[0] && y < updown[1] - 1)
 		{
-			ray->sample_y = ((float)y - updown[0]) / (updown[1] - updown[0]);
-			pos = (abs((int)(ray->sample_y * 288) - 1) * 288 + (int)(ray->sample_x * 288)) * sizeof(int);
+			ray->sample_y = ((float)y - updown[0]) / sub;
+			pos = (abs((int)(ray->sample_y * 288) - 1) * 288 + xscale) * 4;
 			if (env->night)
-				ft_fill_pixel(env->img_data, x, y, *(int*)&env->sprites[ray->sprite].frame[pos]);
+				ft_fill_pixel(env->img_data, x, y,
+					*(int*)&env->sprites[ray->sprite].frame[pos]);
 			else
-				ft_fill_texture(env->img_data, x, y, *(int*)&env->sprites[ray->sprite].frame[pos]);
+				ft_fill_texture(env->img_data, x, y,
+					*(int*)&env->sprites[ray->sprite].frame[pos]);
 		}
 		y++;
 	}
@@ -47,49 +41,63 @@ void	draw_col(t_mlx *env, unsigned int x, float updown[2], t_ray *ray)
 
 void	set_background(t_mlx *env)
 {
-	int		x;
 	int		y;
+	int		half;
 
-	y = HGT / 2;
+	y = env->math.half_hgt;
+	half = y * WDT * 4;
 	*blit_alpha() = true;
 	blit_sprite(env, env->sprites[NB_SPRITES - 1], 0, 0);
 	blit_sprite(env, env->sprites[NB_SPRITES - 1], 288, 0);
 	blit_sprite(env, env->sprites[NB_SPRITES - 1], 512, 0);
-	while (y < HGT)
+	ft_memset(&env->img_data[half], 0x33, half);
+}
+
+void	collision(t_ray *r, t_player *p)
+{
+	r->bloc_mx = (float)r->test_x + 0.5f;
+	r->bloc_my = (float)r->test_y + 0.5f;
+	r->hit_x = p->x + p->eye_x * r->dist;
+	r->hit_y = p->y + p->eye_y * r->dist;
+	r->bloc_angle = atan2f((r->hit_y - r->bloc_my), (r->hit_x - r->bloc_mx));
+	if (r->bloc_angle >= -PI_4 && r->bloc_angle < PI_4)
 	{
-		x = 0;
-		while (x < WDT)
-		{
-			ft_fill_pixel(env->img_data, x, y, 0x333333);
-			x++;
-		}
-		y++;
+		r->sprite = r->hit == BLOC_SPAWN ? MABOYE : WALL_NORTH;
+		r->sample_x = r->hit_y - (float)r->test_y;
+	}
+	else if (r->bloc_angle >= PI_4 && r->bloc_angle < PI_34)
+	{
+		r->sprite = r->hit == BLOC_SPAWN ? MABOYE : WALL_SOUTH;
+		r->sample_x = r->hit_x - (float)r->test_x;
+	}
+	else if (r->bloc_angle < -PI_4 && r->bloc_angle >= -PI_34)
+	{
+		r->sprite = r->hit == BLOC_SPAWN ? MABOYE : WALL_EST;
+		r->sample_x = r->hit_x - (float)r->test_x;
+	}
+	else if (r->bloc_angle >= PI_34 || r->bloc_angle < -PI_34)
+	{
+		r->sprite = r->hit == BLOC_SPAWN ? MABOYE : WALL_WEST;
+		r->sample_x = r->hit_y - (float)r->test_y;
 	}
 }
 
-float	get_max_dist(t_mlx *env)
+void	shoot_ray(t_mlx *env, t_ray *ray, t_player *p)
 {
-	t_z_render		r;
-	unsigned int	i;
-	unsigned int	j;
-	float			ret;
-
-	i = 0;
-	ret = 1000000.0f;
-	while (i < env->map_hgt)
+	p->eye_x = sin(ray->angle);
+	p->eye_y = cos(ray->angle);
+	ray->dist = 0;
+	while (!ray->hit)
 	{
-		j = 0;
-		while (j < env->map_wdt)
+		ray->dist += RAY_STEP;
+		ray->test_x = (int)(p->x + p->eye_x * ray->dist);
+		ray->test_y = (int)(p->y + p->eye_y * ray->dist);
+		if (env->map[ray->test_x][ray->test_y].type != BLOC_VOID)
 		{
-			if (env->map[i][j].type != BLOC_VOID && is_in_fov(env, (float)i + 0.5f, (float)j + 0.5f, &r) && r.dist < ret)
-				ret = r.dist;
-			j++;
+			ray->hit = env->map[ray->test_x][ray->test_y].type;
+			collision(ray, p);
 		}
-		i++;
 	}
-	if (ret == 1000000.0f)
-		return (0.0f);
-	return (relu(ret - 4.0f));
 }
 
 char	*ray_casting(t_mlx *env)
@@ -97,69 +105,24 @@ char	*ray_casting(t_mlx *env)
 	t_ray			ray;
 	t_player		*p;
 	unsigned int	i;
-	float			dcieling;
-	float			dfloor;
 	float			rectify;
-	float			max;
+	float			bounds[2];
 
 	i = 0;
 	p = ((t_player*)&env->player);
-	max = get_max_dist(env);
 	while (i < WDT)
 	{
-		ray.angle = (float)(p->cam.angle - p->cam.fov / 2) + (float)i / (float)WDT * p->cam.fov;
+		ray.angle = (float)(p->cam.angle - env->math.half_fov) +
+			(float)i / (float)WDT * p->cam.fov;
 		ray.hit = 0;
-
-		p->eye_x = sin(ray.angle);
-		p->eye_y = cos(ray.angle);
-		ray.dist = max;
-		while (!ray.hit)
-		{
-			ray.dist += RAY_STEP;
-			ray.test_x = (int)(p->x + p->eye_x * ray.dist);
-			ray.test_y = (int)(p->y + p->eye_y * ray.dist);
-			if (env->map[ray.test_x][ray.test_y].type > 0)
-			{
-				ray.hit = env->map[ray.test_x][ray.test_y].type;
-				
-				ray.bloc_mx = (float)ray.test_x + 0.5f;
-				ray.bloc_my = (float)ray.test_y + 0.5f;
-
-				ray.hit_x = p->x + p->eye_x * ray.dist;
-				ray.hit_y = p->y + p->eye_y * ray.dist;
-
-				ray.bloc_angle = atan2f((ray.hit_y - ray.bloc_my), (ray.hit_x - ray.bloc_mx));
-
-				if (ray.bloc_angle >= -3.14159f * 0.25f && ray.bloc_angle < 3.14159f * 0.25f)
-				{
-					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_NORTH;
-					ray.sample_x = ray.hit_y - (float)ray.test_y;
-				}
-				else if (ray.bloc_angle >= 3.14159f * 0.25f && ray.bloc_angle < 3.14159f * 0.75f)
-				{
-					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_SOUTH;
-					ray.sample_x = ray.hit_x - (float)ray.test_x;
-				}
-				else if (ray.bloc_angle < -3.14159f * 0.25f && ray.bloc_angle >= -3.14159f * 0.75f)
-				{
-					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_EST;
-					ray.sample_x = ray.hit_x - (float)ray.test_x;
-				}
-				else if (ray.bloc_angle >= 3.14159f * 0.75f || ray.bloc_angle < -3.14159f * 0.75f)
-				{
-					ray.sprite = ray.hit == BLOC_SPAWN ? MABOYE : WALL_WEST;
-					ray.sample_x = ray.hit_y - (float)ray.test_y;
-				}
-			}
-		}
-		rectify = ((float)i * p->cam.fov / (float)WDT) - p->cam.fov / 2.0f;
-		ray.dist *= cosf(rectify) + 0.25f;
-		dcieling = (float)(HGT / 2.0f) - (float)(HGT / ray.dist);
-		dfloor = (float)((float)HGT - dcieling);
-
+		shoot_ray(env, &ray, p);
+		rectify = ((float)i * p->cam.fov / (float)WDT) - env->math.half_fov;
+		ray.dist *= cosf(rectify) + 0.33f;
+		bounds[0] = env->math.half_hgt - (float)(HGT / ray.dist);
+		bounds[1] = (float)HGT - bounds[0];
 		env->z_buff[i].val = ray.dist;
 		env->z_buff[i].wall = true;
-		draw_col(env, i, (float[2]){dcieling, dfloor}, &ray);
+		draw_col(env, i, bounds, &ray);
 		i++;
 	}
 	return (env->img_data);

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 07:31:14 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/15 08:03:41 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,15 +16,17 @@
 # define HGT 600
 # define WDT 800 
 
-# define NB_SPRITES 25
-# define WALL_NORTH 17
-# define WALL_SOUTH 18
-# define WALL_EST 19
-# define WALL_WEST 20
-# define MABOYE 23
+# define NB_SPRITES 21
+# define PRECISION 10
+
+# define WALL_NORTH 13
+# define WALL_SOUTH 14
+# define WALL_EST 15
+# define WALL_WEST 16
+
+# define MABOYE NB_SPRITES - 2
 # define ZOMBIE NB_SPRITES - 3
 # define GAME_OVER NB_SPRITES - 4
-
 
 # define KEY_PRESS 2
 # define KEY_RELEASE 3
@@ -32,76 +34,49 @@
 # define KEY_RELEASE_MASK (1L<<1)
 # define BUFF_READ 8192
 
-# define BMP_HEADER_SIZE 54
-
 # define MAX_PATH 256
-
-# define NB_THREADS 16
-
-# define NB_WEAPONS 4
-# define BMP_HEADER_SIZE 54
+# define MAX_ZOMBIES 16
 
 # define MINIMAP_SIZE 3
+# define RETICLE_SIZE 20
+# define NB_WEAPONS 4
 
 # define RAY_STEP 0.01f
-
 # define ANGLE_DELTA 0.033f
 # define INERTIE 0.1f
-
-# define RETICLE_SIZE 20
-
-# define NB_KEYS 260
-
-# define PRECISION 10
-
-# define ESC_KEY 53
-# define SPACE_KEY 49
-# define SHIFT_KEY 257
-# define LEFT_KEY 123
-# define RIGHT_KEY 124
-# define DOWN_KEY 125
-# define UP_KEY 126
-# define KEY_W 13
-# define KEY_A 0
-# define KEY_S 1
-# define KEY_D 2
-# define KEY_M 46
-# define KEY_N 45
 
 # define WAVE_1 10
 # define WAVE_2 33
 # define WAVE_3 100
+# define SPAWN_LAPS 200
 
 # define PI 3.14159f
-# define MPA ((t_mlx*)(param))
-# define IMG img_ptr
-# define IMGD img_data
-
-# define MIN_THREAD_WORK 10
+# define PI_4 0.7853975
+# define PI_34 2.3561925
 
 # include "../libft/libft.h"
 # include "mlx.h"
 # include <stdbool.h>
-# include <assert.h>
 # include <stdio.h>
 # include <limits.h>
-# include <pthread.h>
+# include <time.h>
+# include "keys.h"
 
-enum					e_bloc_type
+enum			e_bloc_type
 {
-						BLOC_VOID,
-						BLOC_FULL,
-						BLOC_SPAWN,
-						BLOC_MAX
+				BLOC_VOID,
+				BLOC_FULL,
+				BLOC_SPAWN,
+				BLOC_MAX
 };
 
-enum					e_weapon_type
+enum			e_weapon_type
 {
-					W_KNIFE,
-					W_GUN = 5,
-					W_MP40 = 9,
-					W_MINIGUN = 13,
-					W_MAX = 14
+				W_KNIFE,
+				W_GUN = 4,
+				W_MP40 = 7,
+				W_MINIGUN = 10,
+				W_MAX = 12
 };
 
 typedef union	u_isr
@@ -112,77 +87,77 @@ typedef union	u_isr
 
 typedef struct	s_draw
 {
-	int		dx;
-	int		dy;
-	int		j;
-	int		xinc;
-	int		yinc;
-	int		cumul;
-	int		x;
-	int		y;
+	int			dx;
+	int			dy;
+	int			j;
+	int			xinc;
+	int			yinc;
+	int			cumul;
+	int			x;
+	int			y;
 }				t_draw;
 
-typedef struct			s_sprite
+typedef struct		s_sprite
 {
-	void				*frame;
-	void				*ptr;
-	int					height;
-	int					width;
-	int					alpha;
-}						t_sprite;
+	void			*frame;
+	void			*ptr;
+	int				height;
+	int				width;
+	int				alpha;
+}					t_sprite;
 
-typedef struct			s_ray
+typedef struct		s_ray
 {
-	float				angle;
-	float				dist;
-	float				hit_x;
-	float				hit_y;
-	float				bloc_mx;
-	float				bloc_my;
-	float				bloc_angle;
-	float				sample_x;
-	float				sample_y;
-	int					sprite;
-	int					test_x;
-	int					test_y;
-	int					hit;
-}						t_ray;
+	float			angle;
+	float			dist;
+	float			hit_x;
+	float			hit_y;
+	float			bloc_mx;
+	float			bloc_my;
+	float			bloc_angle;
+	float			sample_x;
+	float			sample_y;
+	int				sprite;
+	int				test_x;
+	int				test_y;
+	int				hit;
+}					t_ray;
 
-typedef struct			s_bloc
+typedef struct		s_bloc
 {
-	char				type;
+	char			type;
 //	union pr contenir les params
-}						t_bloc;
+}					t_bloc;
 
-typedef struct			s_cam
+typedef struct		s_cam
 {
-	float				height;
-	float				angle;
-	float				fov;
-}						t_cam;
+	float			height;
+	float			angle;
+	float			fov;
+}					t_cam;
 
-typedef struct			s_z_render
+typedef struct		s_z_render
 {
-	float	z_angle;
-	float	cieling;
-	float	floor;
-	float	dist;
-	float	height;
-	float	ratio;
-	float	width;
-	float	middle;
-}						t_z_render;
+	float			z_angle;
+	float			cieling;
+	float			floor;
+	float			dist;
+	float			height;
+	float			ratio;
+	float			width;
+	float			middle;
+}					t_z_render;
 
-typedef struct			s_player
+typedef struct		s_player
 {
-	int					hp;
-	float				speed;
-	float				x;
-	float				y;
-	float				eye_x;
-	float				eye_y;
-	t_cam				cam;
-}						t_player;
+	int				hp;
+	float			speed;
+	float			x;
+	float			y;
+	float			eye_x;
+	float			eye_y;
+	t_cam			cam;
+}					t_player;
 
 typedef struct s_zombie	t_zombie;
 
@@ -214,7 +189,7 @@ struct s_node
 	float	lgoal;
 	int		x;
 	int		y;
-	t_node	*neighbours[4];
+	t_node	*n[4];
 	t_node	*parent;
 	int		index;
 	bool	full;
@@ -238,6 +213,15 @@ typedef struct			s_weapon
 	char			type;
 }				t_weapon;
 
+typedef struct			s_math
+{
+	float				half_fov;
+	int					half_wdt;
+	int					half_hgt;
+	int					wdt4;
+	int					hgt4;
+}						t_math;
+
 typedef struct			s_mlx
 {
 	void				*mlx_ptr;
@@ -254,6 +238,7 @@ typedef struct			s_mlx
 	t_pos				*spawns;
 	t_node				*start;
 	t_node				*end;
+	t_math				math;
 	bool				keys[NB_KEYS];
 	bool				night;
 	float				min_dist;
@@ -281,6 +266,7 @@ void					set_background(t_mlx *env);
 void					ft_fill_pixel(char *img_str, int x, int y, int color);
 char					*ft_clear_image(void *param, char *img_data);
 int						ft_exit(int status);
+void					ft_fill_texture(char *img_str, int x, int y, int color);
 
 /*
 ** Events

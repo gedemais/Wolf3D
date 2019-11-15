@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 17:25:47 by gedemais          #+#    #+#             */
-/*   Updated: 2019/10/30 21:35:44 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/15 06:39:22 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,5 @@ t_node	*node_new(t_node *src)
 	if (!(new = (t_node*)malloc(sizeof(t_node))))
 		return (NULL);
 	ft_memcpy(new, src, sizeof(t_node));
-//	for (int i = 0; i < 4 ; i++)
-//		printf("neighbour %d : %d\n", i, src->neighbours[i]);
 	return (new);
 }

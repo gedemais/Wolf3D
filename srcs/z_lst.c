@@ -6,13 +6,13 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:12:13 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/03 19:49:45 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/15 07:51:11 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-int		z_lstlen(t_zombie *lst)
+int			z_lstlen(t_zombie *lst)
 {
 	t_zombie	*tmp;
 	int			ret;
@@ -27,14 +27,14 @@ int		z_lstlen(t_zombie *lst)
 	return (ret);
 }
 
-void	z_free_lst(t_zombie *lst)
+void		z_free_lst(t_zombie *lst)
 {
 	if (lst->next)
 		z_free_lst(lst->next);
 	free(lst);
 }
 
-void	z_snap_node(t_zombie **lst, t_zombie *node)
+void		z_snap_node(t_zombie **lst, t_zombie *node)
 {
 	t_zombie		*tmp;
 
@@ -59,7 +59,7 @@ void	z_snap_node(t_zombie **lst, t_zombie *node)
 	free(node);
 }
 
-int	z_pushfront(t_zombie **lst, t_zombie *new)
+int			z_pushfront(t_zombie **lst, t_zombie *new)
 {
 	t_zombie	*tmp;
 
@@ -85,12 +85,12 @@ t_zombie	*z_lstnew(t_mlx *env)
 
 	if (!(new = (t_zombie*)malloc(sizeof(t_zombie))))
 		return (NULL);
-	new->hp = 1 + (env->nb_killed * 3);
-	new->damages = 1 + (env->nb_killed / 3);
+	new->hp = 1 + env->nb_killed;
+	new->damages = 1 + (env->nb_killed / 4);
 	spawn = rand() % env->nb_spawns;
 	new->x = (float)env->spawns[spawn].x;
 	new->y = (float)env->spawns[spawn].y;
 	new->refresh = 5;
-	new->dlaps = 50;
+	new->dlaps = 10;
 	return (new);
 }

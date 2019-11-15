@@ -1,11 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minimap.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/15 05:57:01 by gedemais          #+#    #+#             */
+/*   Updated: 2019/11/15 06:38:39 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
-
-int		*color(void)
-{
-	static int	var = 0;
-
-	return (&var);
-}
 
 void	get_color(char type)
 {
@@ -42,7 +47,8 @@ void	point_zombies(t_mlx *env)
 	tmp = env->zombie;
 	while (tmp)
 	{
-		draw_square(env, (int)tmp->x * MINIMAP_SIZE, (int)tmp->y * MINIMAP_SIZE, MINIMAP_SIZE);
+		draw_square(env, (int)tmp->x * MINIMAP_SIZE, (int)tmp->y * MINIMAP_SIZE,
+			MINIMAP_SIZE);
 		tmp = tmp->next;
 	}
 }
@@ -51,17 +57,18 @@ void	draw_fov(t_mlx *env, t_player *p)
 {
 	float			x;
 	float			y;
-	
-	*color() = 0x00ff00;
 
+	*color() = 0x00ff00;
 	x = p->x + 3 * sinf(env->player.cam.angle - PI / 8);
 	y = p->y + 3 * cosf(env->player.cam.angle - PI / 8);
-	ft_draw_line(env, (int[2]){y * MINIMAP_SIZE, x * MINIMAP_SIZE}, (int[2]){(int)p->y * MINIMAP_SIZE, (int)p->x * MINIMAP_SIZE});
-
+	ft_draw_line(env, (int[2]){y * MINIMAP_SIZE, x * MINIMAP_SIZE},
+		(int[2]){(int)p->y * MINIMAP_SIZE, (int)p->x * MINIMAP_SIZE});
 	x = p->x + 3 * sinf(env->player.cam.angle + PI / 8);
 	y = p->y + 3 * cosf(env->player.cam.angle + PI / 8);
-	ft_draw_line(env, (int[2]){y * MINIMAP_SIZE, x * MINIMAP_SIZE}, (int[2]){(int)p->y * MINIMAP_SIZE, (int)p->x * MINIMAP_SIZE});
-	draw_square(env, (p->y - 0.5f) * MINIMAP_SIZE, (p->x - 0.5f) * MINIMAP_SIZE, MINIMAP_SIZE);
+	ft_draw_line(env, (int[2]){y * MINIMAP_SIZE, x * MINIMAP_SIZE},
+		(int[2]){(int)p->y * MINIMAP_SIZE, (int)p->x * MINIMAP_SIZE});
+	draw_square(env, (p->y - 0.5f) * MINIMAP_SIZE, (p->x - 0.5f) * MINIMAP_SIZE,
+		MINIMAP_SIZE);
 }
 
 void	draw_minimap(t_mlx *env)

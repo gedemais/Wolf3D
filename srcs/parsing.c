@@ -6,13 +6,13 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:34 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/04 08:04:36 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/15 07:15:28 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
 
-void	get_spawns(t_mlx *env)
+void				get_spawns(t_mlx *env)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -37,7 +37,7 @@ void	get_spawns(t_mlx *env)
 	}
 }
 
-int		start_check(t_mlx *env)
+int					start_check(t_mlx *env)
 {
 	unsigned int	i;
 	unsigned int	j;
@@ -63,22 +63,23 @@ int		start_check(t_mlx *env)
 	return (0);
 }
 
-int		fill_map(t_mlx *env)
+int					fill_map(t_mlx *env)
 {
-	unsigned int	i;
+	int				i;
 	unsigned int	x;
 	unsigned int	y;
 
-	i = 0;
+	i = -1;
 	y = 0;
-	while (env->file[i])
+	while (env->file[++i])
 	{
 		x = 0;
 		while (env->file[i] && env->file[i] != '\n')
 		{
 			if (ft_isdigit(env->file[i]))
 			{
-				if ((env->map[y][x].type = (char)ft_atoi(&env->file[i])) >= BLOC_MAX)
+				if ((env->map[y][x].type = (char)ft_atoi(&env->file[i])) >=
+					BLOC_MAX)
 					return (-1);
 				if (env->map[y][x].type == BLOC_SPAWN && ++env->nb_spawns)
 					env->war = true;
@@ -87,7 +88,6 @@ int		fill_map(t_mlx *env)
 			i++;
 		}
 		y++;
-		i++;
 	}
 	return (0);
 }
@@ -112,7 +112,7 @@ static inline void	map_bounds(t_mlx *env)
 	}
 }
 
-int		parse_map(t_mlx *env, char *file)
+int					parse_map(t_mlx *env, char *file)
 {
 	unsigned int	i;
 	int				fd;
@@ -130,10 +130,11 @@ int		parse_map(t_mlx *env, char *file)
 			return (-1);
 		i++;
 	}
-	if (fill_map(env) != 0 || !(env->spawns = (t_pos*)malloc(sizeof(t_pos) * env->nb_spawns)))
+	if (fill_map(env) != 0 || !(env->spawns = (t_pos*)malloc(sizeof(t_pos)
+		* env->nb_spawns)))
 		return (-1);
-	get_spawns(env);
 	map_bounds(env);
+	get_spawns(env);
 	free(env->file);
 	return (0);
 }

@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deal_key.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/11/04 23:08:50 by gedemais          #+#    #+#             */
+/*   Updated: 2019/11/15 05:15:41 by gedemais         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "wolf3d.h"
 
-void	handle_keys(t_mlx *env)
+void	handle_moves(t_mlx *env)
 {
 	env->player.speed = env->keys[SHIFT_KEY] ? 0.15 : 0.1;
 	if (env->keys[UP_KEY] || env->keys[KEY_W])
@@ -23,6 +35,10 @@ void	handle_keys(t_mlx *env)
 			env->player.y += cos(env->player.cam.angle) * env->player.speed;
 		}
 	}
+}
+
+void	handle_keys(t_mlx *env)
+{
 	if (env->keys[KEY_D])
 	{
 		env->player.x += cos(env->player.cam.angle) * env->player.speed;
@@ -44,23 +60,19 @@ void	handle_keys(t_mlx *env)
 		}
 	}
 	if (env->keys[RIGHT_KEY])
-		env->player.cam.angle += (float)ANGLE_DELTA * (float)env->player.speed * 10.0f;
+		env->player.cam.angle += (float)ANGLE_DELTA * env->player.speed * 10.0f;
 	if (env->keys[LEFT_KEY])
-		env->player.cam.angle -= (float)ANGLE_DELTA * (float)env->player.speed * 10.0f;
+		env->player.cam.angle -= (float)ANGLE_DELTA * env->player.speed * 10.0f;
 }
 
 int		base(void *param)
 {
 	t_mlx	*env;
-	static int	freq = 0;
-	clock_t	t;
-	clock_t	e;
 
-	t = clock();
 	env = ((t_mlx*)param);
-
 	if (game_over(env))
 		return (0);
+	handle_moves(env);
 	handle_keys(env);
 	set_background(env);
 	env->img_data = ray_casting(env);
@@ -71,10 +83,6 @@ int		base(void *param)
 	draw_minimap(env);
 	barre_de_vie(env, WDT / 1.5, HGT - HGT / 8);
 	mlx_put_image_to_window(env, env->mlx_win, env->img_ptr, 0, 0);
-	e = clock();
-	if (freq % 60 == 0)
-		printf("%f\n", 1 / (float)((float)((float)e - (float)t) / 1000000));
-	freq++;
 	return (0);
 }
 
