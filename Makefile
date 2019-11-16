@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/11/16 04:48:42 by gedemais         ###   ########.fr        #
+#    Updated: 2019/11/16 05:16:41 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -64,7 +64,8 @@ LIB_PATH = libft/
 LIB = libft/libft.a
 
 INC_PATH = includes/
-INC = includes/wolf3d.h
+INC = 	includes/wolf3d.h\
+		includes/keys.h
 
 NAME = wolf3d
 

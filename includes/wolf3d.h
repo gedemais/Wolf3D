@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 04:37:32 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 05:24:50 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@
 # include "../libft/libft.h"
 # include "mlx.h"
 # include <stdbool.h>
-# include <stdio.h>
 # include <limits.h>
 # include <time.h>
 # include "keys.h"
@@ -221,6 +220,7 @@ typedef struct			s_math
 	int					half_hgt;
 	int					wdt4;
 	int					hgt4;
+	int					img_bytes;
 }						t_math;
 
 typedef struct			s_mlx

@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:26 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 01:05:26 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 05:26:03 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,5 @@ void	init_maths(t_mlx *env)
 	env->math.half_hgt = HGT / 2.0f;
 	env->math.wdt4 = WDT * 4;
 	env->math.hgt4 = HGT * 4;
+	env->math.img_bytes = WDT * HGT * 4;
 }

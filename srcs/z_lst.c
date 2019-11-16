@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:12:13 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 04:40:59 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 05:39:05 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_zombie	*z_lstnew(t_mlx *env)
 
 	if (!(new = (t_zombie*)malloc(sizeof(t_zombie))))
 		return (NULL);
-	new->hp = 1 + env->nb_killed;
+	new->hp = 1 + env->nb_killed * 2;
 	new->damages = 1 + (env->nb_killed / 4);
 	spawn = rand() % env->nb_spawns;
 	new->x = (float)env->spawns[spawn].x;
