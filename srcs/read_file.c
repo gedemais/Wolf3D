@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:50 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 07:40:38 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 02:35:20 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char				*read_file(int fd)
 	size[1] = 0;
 	if (fd == -1 || !(dest = ft_strnew(BUFF_READ)))
 		return (NULL);
-	while ((ret = (int)read(fd, buff, BUFF_READ)) > 0)
+	while ((ret = (int)read(fd, buff, BUFF_READ)) > 0 && size[1] < MAX_MAP_SIZE)
 	{
 		size[1] += (unsigned int)ret;
 		buff[ret] = '\0';
@@ -60,7 +60,7 @@ char				*read_file(int fd)
 			return (NULL);
 		dest = buffer_join(dest, buff, size[1] - (unsigned int)ret);
 	}
-	if (ret == -1)
+	if (ret == -1 || size[1] >= MAX_MAP_SIZE)
 	{
 		free(dest);
 		return (NULL);

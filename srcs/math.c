@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:26 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 06:38:36 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 01:05:26 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,6 @@ float	compute_dist(int ax, int ay, int bx, int by)
 	return (fast_isr(as + bs));
 }
 
-float	relu(float n)
-{
-	return (n <= 0 ? 0 : n);
-}
-
 int		*color(void)
 {
 	static int	var = 0;
@@ -57,4 +52,14 @@ bool	*blit_alpha(void)
 	static bool		val = false;
 
 	return (&val);
+}
+
+void	init_maths(t_mlx *env)
+{
+	env->nb_killed = 1;
+	env->math.half_fov = env->player.cam.fov / 2.0f;
+	env->math.half_wdt = WDT / 2.0f;
+	env->math.half_hgt = HGT / 2.0f;
+	env->math.wdt4 = WDT * 4;
+	env->math.hgt4 = HGT * 4;
 }

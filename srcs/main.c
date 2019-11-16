@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 05:38:38 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 02:48:03 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static inline void	init_player(t_mlx *env)
 {
 	env->player.hp = 100;
-	env->player.cam.fov = 3.141 / 3;
+	env->player.cam.fov = PI / 3;
 	env->player.speed = 0.1;
 	env->player.x = env->map_hgt / 2;
 	env->player.y = env->map_wdt / 2;
@@ -24,7 +24,10 @@ static inline void	init_player(t_mlx *env)
 static inline int	ft_set_env(t_mlx *env, char *map)
 {
 	if (parse_map(env, map) != 0)
+	{
+		free(env->file);
 		return (-1);
+	}
 	if (load_sprites(env) != 0
 		|| !(env->mlx_ptr = mlx_init())
 		|| !(env->mlx_win = mlx_new_window(env->mlx_ptr, WDT, HGT, "Wolf3D"))
@@ -38,12 +41,7 @@ static inline int	ft_set_env(t_mlx *env, char *map)
 	ft_memset(&env->keys[0], false, sizeof(bool) * NB_KEYS);
 	init_player(env);
 	init_weapons(env);
-	env->nb_killed = 1;
-	env->math.half_fov = env->player.cam.fov / 2.0f;
-	env->math.half_wdt = WDT / 2.0f;
-	env->math.half_hgt = HGT / 2.0f;
-	env->math.wdt4 = WDT * 4;
-	env->math.hgt4 = HGT * 4;
+	init_maths(env);
 	return (0);
 }
 
@@ -52,7 +50,7 @@ static inline void	set_hooks(t_mlx *env)
 	mlx_hook(env->mlx_win, KEY_PRESS, KEY_PRESS_MASK, press_key, env);
 	mlx_hook(env->mlx_win, KEY_RELEASE, KEY_RELEASE_MASK, release_key, env);
 	mlx_loop_hook(env->mlx_ptr, base, env);
-	mlx_hook(env->mlx_win, 17, (1L << 17), ft_exit, env);
+	mlx_hook(env->mlx_win, 17, (1L << 17), ft_exit, (void*)0);
 }
 
 static inline int	wolf_3d(char *map)
@@ -74,15 +72,12 @@ int					main(int argc, char **argv)
 	if (argc != 2)
 	{
 		ft_putstr_fd("Usage : ./wolfd3d [map]\n", 2);
-		system("leaks wolf3d");
 		return (1);
 	}
 	else if (wolf_3d(argv[1]) == -1)
 	{
 		ft_putstr_fd("Map Error\n", 2);
-		system("leaks wolf3d");
 		return (1);
 	}
-	system("leaks wolf3d");
 	return (0);
 }

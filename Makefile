@@ -6,47 +6,51 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/11/15 05:23:53 by gedemais         ###   ########.fr        #
+#    Updated: 2019/11/16 04:48:42 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = gcc
+CFLAGS = -Wall -Werror -Wextra
 
-CFLAGS = -Wall -Werror -Wextra #-g3 -fsanitize=address
+DEBUG ?= 0
+ifeq ($(DEBUG), 1)
+    CFLAGS += -g3 -fsanitize=address
+endif
 
-OFLAGS = -O3 -Ofast -march=native
+OPTI ?= 0
+ifeq ($(OPTI), 1)
+    CFLAGS += -O3 -Ofast -march=native
+endif
 
-SRCS_NAME = main.c\
-			parsing.c\
-			read_file.c\
-			ray_casting.c\
-			deal_key.c\
-			minimap.c\
+SRCS_NAME = a_star.c\
+            barre.c\
+            bresenham.c\
+            deal_key.c\
+            enemys.c\
+            game_over.c\
+            load_sprites.c\
+            main.c\
+            math.c\
+            minimap.c\
+            mlx_fts.c\
+            node_lst.c\
+            omniscience.c\
+            parsing.c\
+            ray_casting.c\
+            read_file.c\
+            render_zombie.c\
 			reticle.c\
-			a_star.c\
-			enemys.c\
-			render_zombie.c\
-			omniscience.c\
-			game_over.c\
-			bresenham.c\
-			math.c\
-			barre.c\
-			z_lst.c\
-			node_lst.c\
 			weapons.c\
-			load_sprites.c\
-			mlx_fts.c
+			z_lst.c
 
 SRCS_PATH = srcs/
-
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 
 OBJS = $(SRCS_NAME:.c=.o)
 
 MLX_PATH = minilibx_macos/
-
 MLX = minilibx_macos/libmlx.a
-
 MLX_OBJS_NAME = mlx_init_loop.o\
 				mlx_int_str_to_wordtab.o\
 				mlx_new_image.o\
@@ -57,11 +61,9 @@ MLX_OBJS_NAME = mlx_init_loop.o\
 MLX_OBJS = $(addprefix $(MLX_PATH), $(MLX_OBJS_NAME))
 
 LIB_PATH = libft/
-
 LIB = libft/libft.a
 
 INC_PATH = includes/
-
 INC = includes/wolf3d.h
 
 NAME = wolf3d
@@ -70,7 +72,7 @@ all : $(MLX_PATH) $(LIB) $(NAME) $(INC)
 
 $(NAME) : $(MLX) $(INC) $(LIB_PATH) $(SRCS)
 	@echo "Making $(RED)Wolfd3D...$(DEF)"
-	@$(CC) $(CFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
+	$(CC) $(CFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
 	@echo "$(GRE)Done !$(DEF)"
 
 $(LIB) :
@@ -84,6 +86,7 @@ $(MLX) : $(MLX_PATH)
 clean:
 	@rm -rf $(OBJS)
 	@rm -rf $(MLX_OBJS)
+	@rm -rf $(NAME).dSYM
 	@make -C libft/ clean
 
 fclean: clean
@@ -93,3 +96,5 @@ fclean: clean
 	@make -C libft/ fclean
 
 re : fclean all
+
+.PHONY: all clean fclean re

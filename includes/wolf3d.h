@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 00:58:51 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 04:37:32 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 # define HGT 600
 # define WDT 800
+
+# define MAX_MAP_SIZE 1048576
 
 # define NB_SPRITES 21
 # define PRECISION 10
@@ -35,20 +37,20 @@
 # define BUFF_READ 8192
 
 # define MAX_PATH 256
-# define MAX_ZOMBIES 16
+# define MAX_ZOMBIES 24
 
 # define MINIMAP_SIZE 3
 # define RETICLE_SIZE 20
 # define NB_WEAPONS 4
 
-# define RAY_STEP 0.01f
+# define RAY_STEP 0.0075f
 # define ANGLE_DELTA 0.033f
 # define INERTIE 0.1f
 
-# define WAVE_1 10
-# define WAVE_2 33
-# define WAVE_3 100
-# define SPAWN_LAPS 200
+# define WAVE_1 7
+# define WAVE_2 25
+# define WAVE_3 50
+# define SPAWN_LAPS 100
 
 # define PI 3.14159f
 # define PI_4 0.7853975
@@ -177,7 +179,7 @@ struct					s_zombie
 typedef struct			s_z_buff
 {
 	float				val;
-	bool				wall;
+	float				wall;
 }						t_z_buff;
 
 typedef struct s_node	t_node;
@@ -337,6 +339,6 @@ bool					game_over(t_mlx *env);
 int						*color(void);
 
 float					fast_isr(float n);
-float					relu(float n);
+void					init_maths(t_mlx *env);
 
 #endif

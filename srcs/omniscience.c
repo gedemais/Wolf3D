@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:06:27 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 07:11:37 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 04:42:04 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void		apply_a_star(t_mlx *env, t_node *nodes, t_node *s_e[2], t_zombie *z)
 	float	tmp[4];
 	float	speed;
 
-	speed = 0.1;
+	speed = 0.15;
 	tmp[0] = 0.0f;
 	tmp[1] = 0.0f;
 	tmp[2] = z->x;

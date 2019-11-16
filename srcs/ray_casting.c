@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 18:40:17 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 07:39:50 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/16 04:26:38 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,11 +117,11 @@ char	*ray_casting(t_mlx *env)
 		ray.hit = 0;
 		shoot_ray(env, &ray, p);
 		rectify = ((float)i * p->cam.fov / (float)WDT) - env->math.half_fov;
+		env->z_buff[i].val = ray.dist;
+		env->z_buff[i].wall = true;
 		ray.dist *= cosf(rectify) + 0.33f;
 		bounds[0] = env->math.half_hgt - (float)(HGT / ray.dist);
 		bounds[1] = (float)HGT - bounds[0];
-		env->z_buff[i].val = ray.dist;
-		env->z_buff[i].wall = true;
 		draw_col(env, i, bounds, &ray);
 		i++;
 	}
