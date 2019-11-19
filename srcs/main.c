@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:43:03 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 02:48:03 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/19 12:44:38 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ static inline void	init_player(t_mlx *env)
 	env->player.hp = 100;
 	env->player.cam.fov = PI / 3;
 	env->player.speed = 0.1;
-	env->player.x = env->map_hgt / 2;
-	env->player.y = env->map_wdt / 2;
 }
 
 static inline int	ft_set_env(t_mlx *env, char *map)
@@ -34,10 +32,7 @@ static inline int	ft_set_env(t_mlx *env, char *map)
 		|| !(env->img_ptr = mlx_new_image(env->mlx_ptr, WDT, HGT))
 		|| !(env->img_data = mlx_get_data_addr(env->img_ptr, &env->bpp,
 		&env->s_l, &env->endian)))
-	{
-		free(env->file);
 		return (-1);
-	}
 	ft_memset(&env->keys[0], false, sizeof(bool) * NB_KEYS);
 	init_player(env);
 	init_weapons(env);
@@ -76,7 +71,7 @@ int					main(int argc, char **argv)
 	}
 	else if (wolf_3d(argv[1]) == -1)
 	{
-		ft_putstr_fd("Map Error\n", 2);
+		ft_putstr_fd("Error\n", 2);
 		return (1);
 	}
 	return (0);

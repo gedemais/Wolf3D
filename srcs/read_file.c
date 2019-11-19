@@ -6,11 +6,35 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:50 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 02:35:20 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/19 13:12:27 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+int					check_spawn(t_mlx *env)
+{
+	unsigned int	i;
+	unsigned int	j;
+
+	i = 0;
+	while (i < env->map_hgt)
+	{
+		j = 0;
+		while (j < env->map_wdt)
+		{
+			if (env->map[i][j].type == BLOC_VOID)
+			{
+				env->player.x = (float)i + 1.41f;
+				env->player.y = (float)j + 1.41f;
+				return (0);
+			}
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
 
 static inline char	*strrealloc(char *s, unsigned int size)
 {

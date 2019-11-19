@@ -1,6 +1,6 @@
 WOLF3D - 42 Raycasting project
 
-Usage : make OPTI=yes && ./wolf3d [map]
+Usage : make OPTI=1 && ./wolf3d [map]
 
 Map structure :
 ---------------------------------------------------
@@ -29,9 +29,11 @@ Go backward : s
 Straff to the right : a
 Straff to the left: d
 Rotation : Left and Right arrows
-Shoot : Space
+Shoot/Stab : Space Bar
 Night Mode : n
 Quit : Esc
 ---------------------------------------------------
+
+Killing enemys will upgrade your weapon until switching to the next one
 
 Good luck & have fun ! ;)

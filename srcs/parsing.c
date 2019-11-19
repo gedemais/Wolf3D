@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/20 17:07:34 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 07:15:28 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/19 12:45:56 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int					start_check(t_mlx *env)
 			return (-1);
 		env->map_hgt++;
 	}
-	return (0);
+	return (env->map_hgt >= 2 && env->map_wdt >= 2 ? 0 : -1);
 }
 
 int					fill_map(t_mlx *env)
@@ -131,7 +131,7 @@ int					parse_map(t_mlx *env, char *file)
 		i++;
 	}
 	if (fill_map(env) != 0 || !(env->spawns = (t_pos*)malloc(sizeof(t_pos)
-		* env->nb_spawns)))
+		* env->nb_spawns)) || check_spawn(env))
 		return (-1);
 	map_bounds(env);
 	get_spawns(env);

@@ -6,11 +6,27 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 20:11:02 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/15 07:08:12 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/19 12:33:58 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wolf3d.h"
+
+int		init_start_point(t_mlx *env, t_node *nodes, t_zombie *tmp)
+{
+	int		node;
+
+	node = (int)tmp->y * env->map_wdt + (int)tmp->x;
+	if (node < 0 || node >= (int)(env->map_hgt * env->map_wdt))
+	{
+		tmp = tmp->next;
+		return (1);
+	}
+	env->start = &nodes[(int)tmp->y * env->map_wdt + (int)tmp->x];
+	env->start->lgoal = 0.0f;
+	env->start->ggoal = compute_dist(ES->x, ES->y, EE->x, EE->y);
+	return (0);
+}
 
 int		manage_waves(t_mlx *env)
 {

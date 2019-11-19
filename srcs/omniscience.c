@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/24 21:06:27 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 04:42:04 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/19 13:12:08 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void		fill_neighbours(t_mlx *env, t_node *n)
 	}
 }
 
-void		reset_values(t_mlx *env, t_node *nodes)
+int			reset_values(t_mlx *env, t_node *nodes)
 {
 	int				pos;
 	unsigned int	x;
@@ -79,6 +79,7 @@ void		reset_values(t_mlx *env, t_node *nodes)
 		}
 		y++;
 	}
+	return (0);
 }
 
 t_node		*init_nodes(t_mlx *env)
@@ -121,10 +122,8 @@ void		omniscience(t_mlx *env)
 	env->end->y = (int)env->player.y;
 	while (tmp)
 	{
-		reset_values(env, nodes);
-		env->start = &nodes[(int)tmp->y * env->map_wdt + (int)tmp->x];
-		env->start->lgoal = 0.0f;
-		env->start->ggoal = compute_dist(ES->x, ES->y, EE->x, EE->y);
+		if (reset_values(env, nodes) || init_start_point(env, nodes, tmp))
+			continue ;
 		if (compute_dist(tmp->y, tmp->x, env->player.x, env->player.y) >= 1.5)
 			apply_a_star(env, nodes, (t_node*[2]){env->start, env->end}, tmp);
 		else if (tmp->dlaps <= 0 && (tmp->dlaps = SPAWN_LAPS))

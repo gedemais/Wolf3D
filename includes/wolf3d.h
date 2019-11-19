@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/20 18:50:23 by gedemais          #+#    #+#             */
-/*   Updated: 2019/11/16 05:24:50 by gedemais         ###   ########.fr       */
+/*   Updated: 2019/11/19 12:45:21 by gedemais         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,6 +298,7 @@ bool					is_in_fov(t_mlx *e, float zx, float zy, t_z_render *r);
 */
 int						parse_map(t_mlx *env, char *file);
 char					*read_file(int fd);
+int						check_spawn(t_mlx *env);
 int						load_sprites(t_mlx *env);
 
 /*
@@ -315,6 +316,7 @@ void					render_zombie(t_mlx *env, t_zombie *z);
 ** A*
 */
 int						a_star(t_mlx *e, t_node *n, t_node *s[2], float dir[2]);
+int						init_start_point(t_mlx *env, t_node *n, t_zombie *tmp);
 float					compute_dist(int ax, int ay, int bx, int by);
 
 t_node					*node_new(t_node *src);

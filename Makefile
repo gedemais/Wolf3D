@@ -6,7 +6,7 @@
 #    By: gedemais <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/05/20 18:40:16 by gedemais          #+#    #+#              #
-#    Updated: 2019/11/16 05:16:41 by gedemais         ###   ########.fr        #
+#    Updated: 2019/11/19 11:44:31 by gedemais         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,7 +47,9 @@ SRCS_NAME = a_star.c\
 SRCS_PATH = srcs/
 SRCS = $(addprefix $(SRCS_PATH), $(SRCS_NAME))
 
-OBJS = $(SRCS_NAME:.c=.o)
+OBJS_NAME = $(SRCS_NAME:.c=.o)
+OBJS_PATH = objs/
+OBJS = $(addprefix $(SRCS_PATH), $(OBJS_NAME))
 
 MLX_PATH = minilibx_macos/
 MLX = minilibx_macos/libmlx.a
@@ -71,10 +73,12 @@ NAME = wolf3d
 
 all : $(MLX_PATH) $(LIB) $(NAME) $(INC)
 
-$(NAME) : $(MLX) $(INC) $(LIB_PATH) $(SRCS)
-	@echo "Making $(RED)Wolfd3D...$(DEF)"
-	$(CC) $(CFLAGS) -o $(NAME) -I $(INC_PATH) -I minilibx_macos/ $(SRCS) minilibx_macos/libmlx.a -framework OpenGL -framework AppKit -lpthread $(LIB)
+$(NAME) : $(MLX) $(INC) $(LIB_PATH) $(OBJS_NAME)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJS_NAME) -I $(INC_PATH) -I $(MLX_PATH) $(MLX) -framework OpenGL -framework AppKit $(LIB)
 	@echo "$(GRE)Done !$(DEF)"
+
+%.o : $(SRCS_PATH)%.c $(INC)
+	$(CC) $(CFLAGS) -c $< -I $(INC_PATH) -I $(MLX_PATH)
 
 $(LIB) :
 	@echo "Making $(SOU)Libft$(DEF) :"
@@ -83,16 +87,16 @@ $(LIB) :
 $(MLX) : $(MLX_PATH)
 	@echo "Making $(SOU)MinilibX$(DEF) :"
 	@make -C $(MLX_PATH)
+	@echo "Making $(RED)Wolfd3D...$(DEF)"
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -rf $(OBJS_NAME)
 	@rm -rf $(MLX_OBJS)
 	@rm -rf $(NAME).dSYM
 	@make -C libft/ clean
 
 fclean: clean
 	@rm -rf $(NAME)
-	@rm -rf $(OBJS)
 	@rm -rf $(MLX_PATH)/libmlx.a
 	@make -C libft/ fclean
 
